@@ -22,5 +22,10 @@ namespace Assets_Management_System.Models
             Id = _nextId++;
             PurchaseDate = DateTime.Now;
         }
+
+        public override string ToString()
+        {
+            return $"{Name} - {Category} (${Price:F2})";
+        }
     }
 }

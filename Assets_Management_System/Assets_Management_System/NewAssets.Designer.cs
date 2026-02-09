@@ -1,4 +1,4 @@
-﻿namespace Assets_Management_System
+﻿namespace Assets_Management_System.Forms
 {
     partial class NewAssets
     {

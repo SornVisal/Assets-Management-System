@@ -1,11 +1,13 @@
-﻿using Assets_Management_System.Services;
+﻿using Assets_Management_System.Models;
+using Assets_Management_System.Services;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Assets_Management_System.Models;
+using System.Xml.Linq;
+using Assets_Management_System;
 
-namespace Assets_Management_System
+namespace Assets_Management_System.Forms
 {
     public partial class NewAssets : Form
     {
@@ -100,7 +102,7 @@ namespace Assets_Management_System
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error loading image: {ex.Message}");
+                    MessageBox.Show($"Error loading image: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     imagePath = "";
                 }
             }
@@ -173,7 +175,7 @@ namespace Assets_Management_System
 
         private void NewAssets_Load(object sender, EventArgs e)
         {
-
+            // Form load logic
         }
     }
 }

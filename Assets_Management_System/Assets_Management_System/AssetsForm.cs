@@ -1,8 +1,10 @@
-﻿using Assets_Management_System.Models;
+﻿using Assets_Management_System.Forms;
+using Assets_Management_System.Models;
+using Assets_Management_System.Services;
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
-using Assets_Management_System.Services;
 
 namespace Assets_Management_System
 {
@@ -83,15 +85,37 @@ namespace Assets_Management_System
                 dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ImagePath", HeaderText = "Image Path", Width = 150 });
                 dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Notes", HeaderText = "Notes", Width = 150 });
 
+                // ===== STYLING =====
                 dgvAssets.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvAssets.MultiSelect = false;
                 dgvAssets.ReadOnly = true;
                 dgvAssets.AllowUserToAddRows = false;
                 dgvAssets.RowHeadersWidth = 30;
+
+                // Header styling
+                dgvAssets.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(0, 102, 204); // Dark Blue
+                dgvAssets.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                dgvAssets.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 10, FontStyle.Bold);
+
+                // Row styling
+                dgvAssets.DefaultCellStyle.BackColor = Color.White;
+                dgvAssets.DefaultCellStyle.ForeColor = Color.Black;
+                dgvAssets.DefaultCellStyle.Font = new Font("Arial", 9);
+
+                // Alternate row color
+                dgvAssets.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 245, 250); // Light Blue
+                dgvAssets.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
+
+                // Selection styling
+                dgvAssets.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 150, 255); // Bright Blue
+                dgvAssets.DefaultCellStyle.SelectionForeColor = Color.White;
+
+                // Border
+                dgvAssets.GridColor = Color.LightGray;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                MessageBox.Show($"Error loading grid: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -106,16 +130,23 @@ namespace Assets_Management_System
         {
             if (dgvAssets.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Select an asset first");
+                MessageBox.Show("Please select an asset to edit.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var selectedAsset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
-            if (selectedAsset != null)
+            try
             {
-                NewAssets form = new NewAssets(service, selectedAsset);
-                form.ShowDialog();
-                LoadGrid();
+                var selectedAsset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
+                if (selectedAsset != null)
+                {
+                    NewAssets form = new NewAssets(service, selectedAsset);
+                    form.ShowDialog();
+                    LoadGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -123,15 +154,35 @@ namespace Assets_Management_System
         {
             if (dgvAssets.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Select an asset first");
+                MessageBox.Show("Please select an asset to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var asset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
-            if (MessageBox.Show($"Delete {asset.Name}?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            try
             {
-                service.Delete(asset.Id);
-                LoadGrid();
+                var asset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
+                if (asset == null)
+                {
+                    MessageBox.Show("Error: Could not retrieve selected asset.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var result = MessageBox.Show(
+                    $"Are you sure you want to delete:\n\nAsset: {asset.Name}\nSerial: {asset.SerialNumber}\nPrice: ${asset.Price:F2}",
+                    "Confirm Delete",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    service.Delete(asset.Id);
+                    LoadGrid();
+                    MessageBox.Show("Asset deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error deleting asset: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
