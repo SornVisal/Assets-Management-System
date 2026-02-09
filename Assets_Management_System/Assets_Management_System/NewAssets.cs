@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Assets_Management_System.Models;
 
 namespace Assets_Management_System
 {
@@ -21,30 +22,37 @@ namespace Assets_Management_System
 
             LoadCombos();
 
+            // Set title based on operation
             if (asset != null)
+            {
+                this.Text = "Edit Asset";
                 LoadData(asset);
+            }
+            else
+            {
+                this.Text = "Create a New Asset";
+            }
         }
 
-        // =========================
-        // Load dropdown values
-        // =========================
         private void LoadCombos()
         {
+            // Categories
             cbCategory2.Items.AddRange(new string[]
             {
                 "PC", "Laptop", "Printer", "Router",
-                "Switch", "Monitor", "Other"
+                "Switch", "Monitor", "Furniture", "Vehicles", "Other"
             });
 
+            // Status
             cbStatus.Items.AddRange(new string[]
             {
                 "Available", "Assigned", "Repair", "Retired"
             });
 
-            // simple employee list (you can replace later)
+            // Employees
             cbEmployee.Items.AddRange(new string[]
             {
-                "None", "Employee 1", "Employee 2", "Employee 3"
+                "None", "Employee 1", "Employee 2", "Employee 3", "John Smith", "Jane Doe"
             });
 
             cbCategory2.SelectedIndex = 0;
@@ -52,98 +60,115 @@ namespace Assets_Management_System
             cbEmployee.SelectedIndex = 0;
         }
 
-        // =========================
-        // Load data for editing
-        // =========================
         private void LoadData(Asset a)
         {
-            txtName.Text = a.Name;
-            cbCategory2.Text = a.Category;
-            txtSerial.Text = a.SerialNumber;
-            dtPurchase.Value = a.PurchaseDate;
-            txtPrice.Text = a.Price.ToString();
-            cbEmployee.Text = a.EmployeeName;
-            cbStatus.Text = a.Status;
-            txtNotes.Text = a.Notes;
+            txtName.Text = a.Name ?? "";
+            cbCategory2.Text = a.Category ?? "PC";
+            txtSerial.Text = a.SerialNumber ?? "";
+            dtPurchase.Value = a.PurchaseDate != DateTime.MinValue ? a.PurchaseDate : DateTime.Now;
+            txtPrice.Text = a.Price.ToString("F2");
+            cbEmployee.Text = a.EmployeeName ?? "None";
+            cbStatus.Text = a.Status ?? "Available";
+            txtNotes.Text = a.Notes ?? "";
 
-            imagePath = a.ImagePath;
+            imagePath = a.ImagePath ?? "";
 
-            if (File.Exists(imagePath))
-                pictureBoxImage.Image = Image.FromFile(imagePath);
+            if (!string.IsNullOrEmpty(imagePath) && File.Exists(imagePath))
+            {
+                try
+                {
+                    pictureBoxImage.Image = Image.FromFile(imagePath);
+                }
+                catch
+                {
+                    pictureBoxImage.Image = null;
+                }
+            }
         }
 
-        // =========================
-        // Upload image
-        // =========================
         private void btnUpload_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Images|*.jpg;*.png;*.jpeg";
+            ofd.Filter = "Images|*.jpg;*.png;*.jpeg;*.bmp";
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 imagePath = ofd.FileName;
-                pictureBoxImage.Image = Image.FromFile(imagePath);
+                try
+                {
+                    pictureBoxImage.Image = Image.FromFile(imagePath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading image: {ex.Message}");
+                    imagePath = "";
+                }
             }
         }
 
-        // =========================
-        // Save button
-        // =========================
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // Validation
             if (string.IsNullOrWhiteSpace(txtName.Text))
             {
-                MessageBox.Show("Asset name is required");
+                MessageBox.Show("Asset name is required", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtName.Focus();
                 return;
             }
 
-            if (!decimal.TryParse(txtPrice.Text, out decimal price))
+            if (!decimal.TryParse(txtPrice.Text, out decimal price) || price < 0)
             {
-                MessageBox.Show("Invalid price");
+                MessageBox.Show("Invalid price format", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPrice.Focus();
                 return;
             }
 
-            Asset asset = new Asset()
+            try
             {
-                Name = txtName.Text,
-                Category = cbCategory2.Text,
-                SerialNumber = txtSerial.Text,
-                PurchaseDate = dtPurchase.Value,
-                Price = price,
-                EmployeeName = cbEmployee.Text,
-                Status = cbStatus.Text,
-                Notes = txtNotes.Text,
-                ImagePath = imagePath
-            };
+                Asset asset = new Asset()
+                {
+                    Name = txtName.Text.Trim(),
+                    Category = cbCategory2.Text,
+                    SerialNumber = txtSerial.Text.Trim(),
+                    PurchaseDate = dtPurchase.Value,
+                    Price = price,
+                    EmployeeName = cbEmployee.Text,
+                    Status = cbStatus.Text,
+                    Notes = txtNotes.Text.Trim(),
+                    ImagePath = imagePath
+                };
 
-            if (editingAsset == null)
-            {
-                service.Add(asset);
-            }
-            else
-            {
-                asset.Id = editingAsset.Id;
-                service.Update(asset);
-            }
+                if (editingAsset == null)
+                {
+                    service.Add(asset);
+                    MessageBox.Show("Asset added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    asset.Id = editingAsset.Id;
+                    service.Update(asset);
+                    MessageBox.Show("Asset updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
-            this.Close();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving asset: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        // =========================
-        // Cancel
-        // =========================
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        // =========================
-        // Disable employee if not assigned
-        // =========================
         private void cbStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Only enable employee selection if status is "Assigned"
             cbEmployee.Enabled = cbStatus.Text == "Assigned";
+            if (cbStatus.Text != "Assigned")
+                cbEmployee.SelectedIndex = 0; // Reset to "None"
         }
     }
 }

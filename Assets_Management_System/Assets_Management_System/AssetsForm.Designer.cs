@@ -30,19 +30,14 @@
         {
             this.label3 = new System.Windows.Forms.Label();
             this.dgvAssets = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.txtAssetName = new System.Windows.Forms.TextBox();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
+            this.txtAssetName = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -63,12 +58,6 @@
             // dgvAssets
             // 
             this.dgvAssets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAssets.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4,
-            this.Column5});
             this.dgvAssets.Location = new System.Drawing.Point(12, 34);
             this.dgvAssets.Margin = new System.Windows.Forms.Padding(2);
             this.dgvAssets.Name = "dgvAssets";
@@ -76,38 +65,6 @@
             this.dgvAssets.RowTemplate.Height = 28;
             this.dgvAssets.Size = new System.Drawing.Size(1153, 260);
             this.dgvAssets.TabIndex = 3;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Name";
-            this.Column1.MinimumWidth = 8;
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Category";
-            this.Column2.MinimumWidth = 8;
-            this.Column2.Name = "Column2";
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Quantity";
-            this.Column3.MinimumWidth = 8;
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 80;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Price";
-            this.Column4.MinimumWidth = 8;
-            this.Column4.Name = "Column4";
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Total Value";
-            this.Column5.MinimumWidth = 8;
-            this.Column5.Name = "Column5";
-            this.Column5.Width = 150;
             // 
             // panel5
             // 
@@ -118,6 +75,7 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(1153, 416);
             this.panel5.TabIndex = 4;
+            this.panel5.Paint += new System.Windows.Forms.PaintEventHandler(this.panel5_Paint);
             // 
             // label10
             // 
@@ -154,17 +112,6 @@
             this.panel1.Size = new System.Drawing.Size(1184, 711);
             this.panel1.TabIndex = 5;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-            // 
-            // txtAssetName
-            // 
-            this.txtAssetName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtAssetName.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAssetName.Location = new System.Drawing.Point(1012, 23);
-            this.txtAssetName.Margin = new System.Windows.Forms.Padding(2);
-            this.txtAssetName.Multiline = true;
-            this.txtAssetName.Name = "txtAssetName";
-            this.txtAssetName.Size = new System.Drawing.Size(141, 36);
-            this.txtAssetName.TabIndex = 18;
             // 
             // btnDelete
             // 
@@ -208,6 +155,17 @@
             this.btnNew.UseVisualStyleBackColor = false;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click_1);
             // 
+            // txtAssetName
+            // 
+            this.txtAssetName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtAssetName.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAssetName.Location = new System.Drawing.Point(1012, 23);
+            this.txtAssetName.Margin = new System.Windows.Forms.Padding(2);
+            this.txtAssetName.Multiline = true;
+            this.txtAssetName.Name = "txtAssetName";
+            this.txtAssetName.Size = new System.Drawing.Size(141, 36);
+            this.txtAssetName.TabIndex = 18;
+            // 
             // AssetsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -235,11 +193,6 @@
 
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dgvAssets;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label2;
