@@ -1,0 +1,27 @@
+# Visual Studio
+.vs/
+.vscode/
+bin/
+obj/
+*.user
+*.suo
+*.sln.docstates
+
+# Build results
+Debug/
+Release/
+x64/
+x86/
+
+# NuGet
+packages/
+*.nupkg
+
+# Database
+*.mdf
+*.ldf
+*.log
+
+# Other
+node_modules/
+.DS_Store
