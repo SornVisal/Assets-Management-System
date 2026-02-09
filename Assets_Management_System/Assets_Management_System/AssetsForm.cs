@@ -5,11 +5,15 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Assets_Management_System.Models;
+using Assets_Management_System.Services;
+
 
 namespace Assets_Management_System
 {
     public partial class AssetsForm : Form
     {
+        private AssetService service = new AssetService();
         private BindingList<Asset> assets;
         private readonly string[] Categories = new string[]
         {
@@ -248,6 +252,7 @@ namespace Assets_Management_System
         // Optional: Add some sample data on first load (remove later if you connect to DB)
         private void AssetsForm_Load(object sender, EventArgs e)
         {
+            LoadGrid();
             if (assets.Count == 0)
             {
                 assets.Add(new Asset { Name = "Laptop Dell XPS", Category = "Electronics", Quantity = 10, Price = 1299.99m });
@@ -259,15 +264,74 @@ namespace Assets_Management_System
         // ==================== ASSET MODEL (Inner Class) ====================
         public class Asset
         {
-            public string Name { get; set; } = string.Empty;
-            public string Category { get; set; } = string.Empty;
-            public int Quantity { get; set; }
-            public decimal Price { get; set; }
+            //public string Name { get; set; } = string.Empty;
+            //public string Category { get; set; } = string.Empty;
+           //public int Quantity { get; set; }
+           // public decimal Price { get; set; }
 
             // Calculated property
-            public decimal TotalValue => Quantity * Price;
+           // public decimal TotalValue => Quantity * Price;
 
-            public override string ToString() => $"{Name} ({Quantity} × ${Price:F2})";
+            //public override string ToString() => $"{Name} ({Quantity} × ${Price:F2})";
+
+            public string AssetId { get; set; }      // unique code
+            public string Name { get; set; }
+            public string SerialNumber { get; set; }
+
+            public DateTime PurchaseDate { get; set; }
+            public decimal PurchasePrice { get; set; }
+
+            public string Category { get; set; }
+            public string Status { get; set; }       // Available / Assigned / Repair
+
+            public string EmployeeName { get; set; } // who uses it
+            public string Location { get; set; }
+
+            public string ImagePath { get; set; }    // store file path only
+            public string Notes { get; set; }
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDelete_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnNew_Click_1(object sender, EventArgs e)
+        {
+            NewAssets f = new NewAssets(service);
+            f.ShowDialog();
+
+            LoadGrid(); // refresh list after closing
+        }
+
+        private void btnEdit_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDelete_Click_2(object sender, EventArgs e)
+        {
+
+        }
+        private void LoadGrid()
+        {
+            dgvAssets.DataSource = null;
+            dgvAssets.DataSource = service.GetAll();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
