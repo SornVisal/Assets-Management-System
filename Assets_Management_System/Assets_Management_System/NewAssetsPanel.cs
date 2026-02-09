@@ -4,58 +4,82 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using Assets_Management_System;
 
 namespace Assets_Management_System.Forms
 {
-    public partial class NewAssets : Form
+    public partial class NewAssetsPanel : UserControl
     {
         private AssetService service;
         private Asset editingAsset = null;
         private string imagePath = "";
 
-        public NewAssets(AssetService s, Asset asset = null)
+        // Event to notify parent form when save/cancel is clicked
+        public event EventHandler OnSaveCompleted;
+        public event EventHandler OnCancelled;
+
+        public NewAssetsPanel()
         {
             InitializeComponent();
+        }
 
+        public void Initialize(AssetService s, Asset asset = null)
+        {
             service = s;
             editingAsset = asset;
+            imagePath = "";
 
             LoadCombos();
 
-            // Set title based on operation
             if (asset != null)
             {
-                this.Text = "Edit Asset";
                 LoadData(asset);
             }
             else
             {
-                this.Text = "Create a New Asset";
+                ClearForm();
             }
+        }
+
+        private void ClearForm()
+        {
+            txtName.Text = "";
+            cbCategory2.SelectedIndex = 0;
+            txtSerial.Text = "";
+            dtPurchase.Value = DateTime.Now;
+            txtPrice.Text = "0.00";
+            cbEmployee.SelectedIndex = 0;
+            cbStatus.SelectedIndex = 0;
+            txtNotes.Text = "";
+            pictureBoxImage.Image = null;
+            imagePath = "";
         }
 
         private void LoadCombos()
         {
-            // Categories
-            cbCategory2.Items.AddRange(new string[]
+            if (cbCategory2.Items.Count == 0)
             {
-                "PC", "Laptop", "Printer", "Router",
-                "Switch", "Monitor", "Furniture", "Vehicles", "Other"
-            });
+                cbCategory2.Items.AddRange(new string[]
+                {
+                    "PC", "Laptop", "Printer", "Router",
+                    "Switch", "Monitor", "Furniture", "Vehicles", "Other"
+                });
+            }
 
-            // Status
-            cbStatus.Items.AddRange(new string[]
+            if (cbStatus.Items.Count == 0)
             {
-                "Available", "Assigned", "Repair", "Retired"
-            });
+                cbStatus.Items.AddRange(new string[]
+                {
+                    "Available", "Assigned", "Repair", "Retired"
+                });
+            }
 
-            // Employees
-            cbEmployee.Items.AddRange(new string[]
+            if (cbEmployee.Items.Count == 0)
             {
-                "None", "Employee 1", "Employee 2", "Employee 3", "John Smith", "Jane Doe"
-            });
+                cbEmployee.Items.AddRange(new string[]
+                {
+                    "None", "Employee 1", "Employee 2", "Employee 3", "John Smith", "Jane Doe"
+                });
+            }
 
             cbCategory2.SelectedIndex = 0;
             cbStatus.SelectedIndex = 0;
@@ -110,7 +134,6 @@ namespace Assets_Management_System.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Validation
             if (string.IsNullOrWhiteSpace(txtName.Text))
             {
                 MessageBox.Show("Asset name is required", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -152,7 +175,7 @@ namespace Assets_Management_System.Forms
                     MessageBox.Show("Asset updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
-                this.Close();
+                OnSaveCompleted?.Invoke(this, EventArgs.Empty);
             }
             catch (Exception ex)
             {
@@ -162,20 +185,18 @@ namespace Assets_Management_System.Forms
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            OnCancelled?.Invoke(this, EventArgs.Empty);
         }
 
         private void cbStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Only enable employee selection if status is "Assigned"
             cbEmployee.Enabled = cbStatus.Text == "Assigned";
             if (cbStatus.Text != "Assigned")
-                cbEmployee.SelectedIndex = 0; // Reset to "None"
+                cbEmployee.SelectedIndex = 0;
         }
 
-        private void NewAssets_Load(object sender, EventArgs e)
+        private void NewAssetsPanel_Load(object sender, EventArgs e)
         {
-            // Form load logic
         }
     }
 }

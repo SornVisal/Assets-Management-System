@@ -1,10 +1,10 @@
-﻿using Assets_Management_System.Forms;
-using Assets_Management_System.Models;
-using Assets_Management_System.Services;
+﻿using Assets_Management_System.Models;
+using Assets_Management_System.Forms;
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
+using Assets_Management_System.Services;
+using System.Drawing;
 
 namespace Assets_Management_System
 {
@@ -12,6 +12,7 @@ namespace Assets_Management_System
     {
         private AssetService service = new AssetService();
         private BindingSource bindingSource = new BindingSource();
+        private NewAssetsPanel newAssetsPanel;
 
         public AssetsForm()
         {
@@ -54,6 +55,12 @@ namespace Assets_Management_System
                     Status = "Assigned"
                 });
             }
+
+            // Create the UserControl
+            newAssetsPanel = new NewAssetsPanel();
+            newAssetsPanel.OnSaveCompleted += (s, evt) => HideFormPanel();
+            newAssetsPanel.OnCancelled += (s, evt) => HideFormPanel();
+
             LoadGrid();
         }
 
@@ -85,33 +92,26 @@ namespace Assets_Management_System
                 dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ImagePath", HeaderText = "Image Path", Width = 150 });
                 dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Notes", HeaderText = "Notes", Width = 150 });
 
-                // ===== STYLING =====
+                dgvAssets.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(0, 102, 204);
+                dgvAssets.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                dgvAssets.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 10, FontStyle.Bold);
+
+                dgvAssets.DefaultCellStyle.BackColor = Color.White;
+                dgvAssets.DefaultCellStyle.ForeColor = Color.Black;
+                dgvAssets.DefaultCellStyle.Font = new Font("Arial", 9);
+
+                dgvAssets.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 245, 250);
+                dgvAssets.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
+
+                dgvAssets.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 150, 255);
+                dgvAssets.DefaultCellStyle.SelectionForeColor = Color.White;
+
+                dgvAssets.GridColor = Color.LightGray;
                 dgvAssets.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvAssets.MultiSelect = false;
                 dgvAssets.ReadOnly = true;
                 dgvAssets.AllowUserToAddRows = false;
                 dgvAssets.RowHeadersWidth = 30;
-
-                // Header styling
-                dgvAssets.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(0, 102, 204); // Dark Blue
-                dgvAssets.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-                dgvAssets.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 10, FontStyle.Bold);
-
-                // Row styling
-                dgvAssets.DefaultCellStyle.BackColor = Color.White;
-                dgvAssets.DefaultCellStyle.ForeColor = Color.Black;
-                dgvAssets.DefaultCellStyle.Font = new Font("Arial", 9);
-
-                // Alternate row color
-                dgvAssets.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 245, 250); // Light Blue
-                dgvAssets.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
-
-                // Selection styling
-                dgvAssets.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 150, 255); // Bright Blue
-                dgvAssets.DefaultCellStyle.SelectionForeColor = Color.White;
-
-                // Border
-                dgvAssets.GridColor = Color.LightGray;
             }
             catch (Exception ex)
             {
@@ -119,11 +119,31 @@ namespace Assets_Management_System
             }
         }
 
+        private void ShowFormPanel(Asset asset = null)
+        {
+            dgvAssets.Visible = false;
+            newAssetsPanel.Initialize(service, asset);
+
+            if (!pnlContent.Controls.Contains(newAssetsPanel))
+            {
+                pnlContent.Controls.Add(newAssetsPanel);
+                newAssetsPanel.Dock = DockStyle.Fill;
+            }
+
+            newAssetsPanel.Visible = true;
+            newAssetsPanel.BringToFront();
+        }
+
+        private void HideFormPanel()
+        {
+            dgvAssets.Visible = true;
+            newAssetsPanel.Visible = false;
+            LoadGrid();
+        }
+
         private void btnNew_Click_1(object sender, EventArgs e)
         {
-            NewAssets form = new NewAssets(service, null);
-            form.ShowDialog();
-            LoadGrid();
+            ShowFormPanel(null);
         }
 
         private void btnEdit_Click_1(object sender, EventArgs e)
@@ -134,19 +154,10 @@ namespace Assets_Management_System
                 return;
             }
 
-            try
+            var selectedAsset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
+            if (selectedAsset != null)
             {
-                var selectedAsset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
-                if (selectedAsset != null)
-                {
-                    NewAssets form = new NewAssets(service, selectedAsset);
-                    form.ShowDialog();
-                    LoadGrid();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowFormPanel(selectedAsset);
             }
         }
 
@@ -158,31 +169,21 @@ namespace Assets_Management_System
                 return;
             }
 
-            try
-            {
-                var asset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
-                if (asset == null)
-                {
-                    MessageBox.Show("Error: Could not retrieve selected asset.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+            var asset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
+            if (asset == null)
+                return;
 
-                var result = MessageBox.Show(
-                    $"Are you sure you want to delete:\n\nAsset: {asset.Name}\nSerial: {asset.SerialNumber}\nPrice: ${asset.Price:F2}",
-                    "Confirm Delete",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
+            var result = MessageBox.Show(
+                $"Are you sure you want to delete:\n\nAsset: {asset.Name}\nSerial: {asset.SerialNumber}\nPrice: ${asset.Price:F2}",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
-                if (result == DialogResult.Yes)
-                {
-                    service.Delete(asset.Id);
-                    LoadGrid();
-                    MessageBox.Show("Asset deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
+            if (result == DialogResult.Yes)
             {
-                MessageBox.Show($"Error deleting asset: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                service.Delete(asset.Id);
+                LoadGrid();
+                MessageBox.Show("Asset deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

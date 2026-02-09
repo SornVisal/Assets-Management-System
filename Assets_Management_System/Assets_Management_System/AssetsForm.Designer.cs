@@ -30,7 +30,7 @@
         {
             this.label3 = new System.Windows.Forms.Label();
             this.dgvAssets = new System.Windows.Forms.DataGridView();
-            this.panel5 = new System.Windows.Forms.Panel();
+            this.pnlContent = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -39,7 +39,7 @@
             this.btnNew = new System.Windows.Forms.Button();
             this.txtAssetName = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).BeginInit();
-            this.panel5.SuspendLayout();
+            this.pnlContent.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,24 +58,24 @@
             // dgvAssets
             // 
             this.dgvAssets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAssets.Location = new System.Drawing.Point(12, 34);
+            this.dgvAssets.Location = new System.Drawing.Point(9, 34);
             this.dgvAssets.Margin = new System.Windows.Forms.Padding(2);
             this.dgvAssets.Name = "dgvAssets";
             this.dgvAssets.RowHeadersWidth = 62;
             this.dgvAssets.RowTemplate.Height = 28;
-            this.dgvAssets.Size = new System.Drawing.Size(1153, 260);
+            this.dgvAssets.Size = new System.Drawing.Size(1124, 592);
             this.dgvAssets.TabIndex = 3;
             // 
-            // panel5
+            // pnlContent
             // 
-            this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel5.Controls.Add(this.label10);
-            this.panel5.Controls.Add(this.dgvAssets);
-            this.panel5.Location = new System.Drawing.Point(19, 73);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1153, 416);
-            this.panel5.TabIndex = 4;
-            this.panel5.Paint += new System.Windows.Forms.PaintEventHandler(this.panel5_Paint);
+            this.pnlContent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlContent.Controls.Add(this.label10);
+            this.pnlContent.Controls.Add(this.dgvAssets);
+            this.pnlContent.Location = new System.Drawing.Point(19, 73);
+            this.pnlContent.Name = "pnlContent";
+            this.pnlContent.Size = new System.Drawing.Size(1153, 635);
+            this.pnlContent.TabIndex = 4;
+            this.pnlContent.Paint += new System.Windows.Forms.PaintEventHandler(this.panel5_Paint);
             // 
             // label10
             // 
@@ -105,7 +105,7 @@
             this.panel1.Controls.Add(this.btnEdit);
             this.panel1.Controls.Add(this.btnNew);
             this.panel1.Controls.Add(this.txtAssetName);
-            this.panel1.Controls.Add(this.panel5);
+            this.panel1.Controls.Add(this.pnlContent);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -180,8 +180,8 @@
             this.Text = "AssetsForm";
             this.Load += new System.EventHandler(this.AssetsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).EndInit();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
+            this.pnlContent.ResumeLayout(false);
+            this.pnlContent.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -193,7 +193,7 @@
 
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dgvAssets;
-        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel pnlContent;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel1;
