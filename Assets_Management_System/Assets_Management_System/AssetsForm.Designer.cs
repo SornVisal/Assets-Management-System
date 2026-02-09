@@ -54,13 +54,12 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnClear = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.pnlShow = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.pnlShow.SuspendLayout();
             this.SuspendLayout();
             // 
             // label3
@@ -68,7 +67,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(117)))), ((int)(((byte)(139)))));
-            this.label3.Location = new System.Drawing.Point(29, 76);
+            this.label3.Location = new System.Drawing.Point(15, 49);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(318, 21);
@@ -134,7 +133,7 @@
             this.Column3,
             this.Column4,
             this.Column5});
-            this.dgvAssets.Location = new System.Drawing.Point(33, 474);
+            this.dgvAssets.Location = new System.Drawing.Point(19, 447);
             this.dgvAssets.Margin = new System.Windows.Forms.Padding(2);
             this.dgvAssets.Name = "dgvAssets";
             this.dgvAssets.RowHeadersWidth = 62;
@@ -188,7 +187,7 @@
             // 
             this.panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel5.Controls.Add(this.label10);
-            this.panel5.Location = new System.Drawing.Point(33, 431);
+            this.panel5.Location = new System.Drawing.Point(19, 404);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(539, 43);
             this.panel5.TabIndex = 4;
@@ -322,7 +321,7 @@
             this.panel3.Controls.Add(this.txtAssetName);
             this.panel3.Controls.Add(this.label6);
             this.panel3.Controls.Add(this.panel4);
-            this.panel3.Location = new System.Drawing.Point(32, 116);
+            this.panel3.Location = new System.Drawing.Point(18, 89);
             this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(540, 294);
@@ -346,25 +345,20 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Tai Le", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(25, 36);
+            this.label2.Location = new System.Drawing.Point(11, 9);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(305, 41);
             this.label2.TabIndex = 0;
             this.label2.Text = "Asset Management";
             // 
-            // pnlShow
+            // panel1
             // 
-            this.pnlShow.AutoScroll = true;
-            this.pnlShow.Controls.Add(this.panel5);
-            this.pnlShow.Controls.Add(this.dgvAssets);
-            this.pnlShow.Controls.Add(this.panel3);
-            this.pnlShow.Controls.Add(this.label3);
-            this.pnlShow.Controls.Add(this.label2);
-            this.pnlShow.Location = new System.Drawing.Point(212, 2);
-            this.pnlShow.Name = "pnlShow";
-            this.pnlShow.Size = new System.Drawing.Size(596, 691);
-            this.pnlShow.TabIndex = 3;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1184, 711);
+            this.panel1.TabIndex = 5;
             // 
             // AssetsForm
             // 
@@ -372,11 +366,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(825, 710);
-            this.Controls.Add(this.pnlShow);
+            this.ClientSize = new System.Drawing.Size(1184, 711);
+            this.Controls.Add(this.panel5);
+            this.Controls.Add(this.dgvAssets);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.panel1);
             this.Name = "AssetsForm";
             this.Text = "AssetsForm";
-//            this.Load += new System.EventHandler(this.AssetsForm_Load);
+            this.Load += new System.EventHandler(this.AssetsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAssets)).EndInit();
             this.panel5.ResumeLayout(false);
@@ -385,9 +384,8 @@
             this.panel4.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.pnlShow.ResumeLayout(false);
-            this.pnlShow.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -419,6 +417,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel pnlShow;
+        private System.Windows.Forms.Panel panel1;
     }
 }

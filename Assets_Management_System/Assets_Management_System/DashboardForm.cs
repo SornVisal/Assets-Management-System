@@ -101,5 +101,10 @@ namespace Assets_Management_System
         {
 
         }
+
+        private void DashboardForm_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

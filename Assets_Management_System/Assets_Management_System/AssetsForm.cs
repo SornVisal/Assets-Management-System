@@ -1,196 +1,273 @@
 ﻿using Assets_Management_System.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Assets_Management_System.AssetsForm;
 
 namespace Assets_Management_System
 {
     public partial class AssetsForm : Form
     {
         private BindingList<Asset> assets;
+        private readonly string[] Categories = new string[]
+        {
+            "Electronics", "Furniture", "Stationery", "Vehicles", "Office Equipment", "Other"
+        };
+
         public AssetsForm()
         {
             InitializeComponent();
             InitializeCustomComponents();
+
+            // These lines fix size + no maximize + centered
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+
+            // Try one of these sizes (start with the first)
+            this.Size = new Size(1200, 750);       // ← most common good size
+                                                   // this.Size = new Size(1280, 800);
+                                                   // this.Size = new Size(1360, 768);    // fits many laptops perfectly
+
+            this.MinimumSize = this.Size;
+            this.MaximumSize = this.Size;
         }
 
+        private void InitializeCustomComponents()
+        {
+            // Initialize data source
+            assets = new BindingList<Asset>();
+            dgvAssets.DataSource = assets;
+
+            // Manual column mapping (must match exact column names in Designer)
+            ConfigureDataGridViewColumns();
+
+            // Setup ComboBox
+            cbCategory.Items.Clear();
+            cbCategory.Items.Add("— Select Category —");
+            cbCategory.Items.AddRange(Categories);
+            cbCategory.SelectedIndex = 0;
+            cbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // NumericUpDown settings
+            nudQuantity.Minimum = 1;
+            nudQuantity.Maximum = 100000;
+            nudQuantity.Increment = 1;
+
+            // Price textbox: only allow numbers and one decimal point
+            txtPrice.KeyPress += TxtPrice_KeyPress;
+
+            // Selection changed → fill fields
+            dgvAssets.SelectionChanged += DgvAssets_SelectionChanged;
+
+            // Double-click row to edit (very user-friendly)
+            dgvAssets.DoubleClick += DgvAssets_DoubleClick;
+
+            // Better column headers
+            dgvAssets.Columns["Column1"].HeaderText = "Asset Name";
+            dgvAssets.Columns["Column2"].HeaderText = "Category";
+            dgvAssets.Columns["Column3"].HeaderText = "Quantity";
+            dgvAssets.Columns["Column4"].HeaderText = "Unit Price";
+            dgvAssets.Columns["Column5"].HeaderText = "Total Value";
+
+            // Select full row + better selection mode
+            dgvAssets.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvAssets.MultiSelect = false;
+            dgvAssets.ReadOnly = true;
+            dgvAssets.AllowUserToAddRows = false;
+            dgvAssets.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        private void ConfigureDataGridViewColumns()
+        {
+            dgvAssets.AutoGenerateColumns = false;
+
+            dgvAssets.Columns["Column1"].DataPropertyName = "Name";
+            dgvAssets.Columns["Column2"].DataPropertyName = "Category";
+            dgvAssets.Columns["Column3"].DataPropertyName = "Quantity";
+            dgvAssets.Columns["Column4"].DataPropertyName = "Price";
+            dgvAssets.Columns["Column5"].DataPropertyName = "TotalValue";
+
+            // Currency formatting
+            dgvAssets.Columns["Column4"].DefaultCellStyle.Format = "$#,##0.00";
+            dgvAssets.Columns["Column5"].DefaultCellStyle.Format = "$#,##0.00";
+            dgvAssets.Columns["Column5"].DefaultCellStyle.Font = new Font(dgvAssets.Font, FontStyle.Bold);
+            dgvAssets.Columns["Column5"].DefaultCellStyle.ForeColor = Color.DarkGreen;
+        }
 
         private void DgvAssets_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvAssets.SelectedRows.Count > 0)
             {
-                var selectedAsset = (Asset)dgvAssets.SelectedRows[0].DataBoundItem;
-                txtAssetName.Text = selectedAsset.Name;
-                if (cbCategory.Items.Contains(selectedAsset.Category))
-                    cbCategory.SelectedItem = selectedAsset.Category;
-                nudQuantity.Value = selectedAsset.Quantity;
-                txtPrice.Text = selectedAsset.Price.ToString();
+                var asset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
+                if (asset != null)
+                {
+                    txtAssetName.Text = asset.Name;
+                    cbCategory.SelectedItem = asset.Category;
+                    nudQuantity.Value = asset.Quantity;
+                    txtPrice.Text = asset.Price.ToString("F2");
+                }
             }
         }
-        private void InitializeCustomComponents()
+
+        private void DgvAssets_DoubleClick(object sender, EventArgs e)
         {
-            assets = new BindingList<Asset>();
-
-            // Map existing columns to properties
-            dgvAssets.AutoGenerateColumns = false;
-            if (dgvAssets.Columns["Column1"] != null) dgvAssets.Columns["Column1"].DataPropertyName = "Name";
-            if (dgvAssets.Columns["Column2"] != null) dgvAssets.Columns["Column2"].DataPropertyName = "Category";
-            if (dgvAssets.Columns["Column3"] != null) dgvAssets.Columns["Column3"].DataPropertyName = "Quantity";
-            if (dgvAssets.Columns["Column4"] != null) dgvAssets.Columns["Column4"].DataPropertyName = "Price";
-            if (dgvAssets.Columns["Column5"] != null) dgvAssets.Columns["Column5"].DataPropertyName = "TotalValue";
-
-            dgvAssets.DataSource = assets;
-
-            // Format columns
-            if (dgvAssets.Columns["Column4"] != null)
-                dgvAssets.Columns["Column4"].DefaultCellStyle.Format = "C2";
-            if (dgvAssets.Columns["Column5"] != null)
-            {
-                dgvAssets.Columns["Column5"].DefaultCellStyle.Format = "C2";
-                dgvAssets.Columns["Column5"].ReadOnly = true;
-            }
-
-            // Populate categories if empty (Designer might have "Select category")
-            cbCategory.Items.Clear();
-            cbCategory.Items.AddRange(new string[] { "Select category", "Electronics", "Furniture", "Stationery", "Vehicles", "Other" });
-            cbCategory.SelectedIndex = 0;
-
-            // NumericUpDown formatting
-            nudQuantity.Minimum = 0;
-            nudQuantity.Maximum = 10000;
-
-            // Handle grid selection change to populate fields
-            dgvAssets.SelectionChanged += DgvAssets_SelectionChanged;
+            btnUpdate.PerformClick(); // Optional: auto focus update when double-click
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (!ValidateInput()) return;
+            if (!ValidateInputs()) return;
 
-                var asset = new Asset
-                {
-                    Name = txtAssetName.Text.Trim(),
-                    Category = cbCategory.SelectedItem.ToString(),
-                    Quantity = (int)nudQuantity.Value,
-                    Price = decimal.Parse(txtPrice.Text)
-                };
-
-                assets.Add(asset);
-                ClearFields();
-            }
-            catch (Exception ex)
+            var newAsset = new Asset
             {
-                MessageBox.Show($"Error adding asset: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                Name = txtAssetName.Text.Trim(),
+                Category = cbCategory.SelectedItem.ToString(),
+                Quantity = (int)nudQuantity.Value,
+                Price = decimal.Parse(txtPrice.Text)
+            };
+
+            assets.Add(newAsset);
+            ClearInputFields();
+            MessageBox.Show("Asset added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            try
+            if (dgvAssets.SelectedRows.Count == 0)
             {
-                if (dgvAssets.SelectedRows.Count == 0)
-                {
-                    MessageBox.Show("Please select an asset to update.", "Selection Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (!ValidateInput()) return;
-
-                var selectedAsset = (Asset)dgvAssets.SelectedRows[0].DataBoundItem;
-                selectedAsset.Name = txtAssetName.Text.Trim();
-                selectedAsset.Category = cbCategory.SelectedItem.ToString();
-                selectedAsset.Quantity = (int)nudQuantity.Value;
-                selectedAsset.Price = decimal.Parse(txtPrice.Text);
-
-                dgvAssets.Refresh();
-                ClearFields();
+                MessageBox.Show("Please select an asset to update.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating asset: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+
+            if (!ValidateInputs()) return;
+
+            var selectedAsset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
+            if (selectedAsset == null) return;
+
+            selectedAsset.Name = txtAssetName.Text.Trim();
+            selectedAsset.Category = cbCategory.SelectedItem.ToString();
+            selectedAsset.Quantity = (int)nudQuantity.Value;
+            selectedAsset.Price = decimal.Parse(txtPrice.Text);
+
+            dgvAssets.Refresh();
+            ClearInputFields();
+            MessageBox.Show("Asset updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            try
+            if (dgvAssets.SelectedRows.Count == 0)
             {
-                if (dgvAssets.SelectedRows.Count == 0)
-                {
-                    MessageBox.Show("Please select an asset to delete.", "Selection Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (MessageBox.Show("Are you sure you want to delete this asset?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    var selectedAsset = (Asset)dgvAssets.SelectedRows[0].DataBoundItem;
-                    assets.Remove(selectedAsset);
-                    ClearFields();
-                }
+                MessageBox.Show("Please select an asset to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            catch (Exception ex)
+
+            var asset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
+
+            var result = MessageBox.Show(
+                $"Are you sure you want to delete:\n\n{asset.Name} ({asset.Category})\nQuantity: {asset.Quantity} × ${asset.Price:F2} = ${asset.TotalValue:F2}?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
             {
-                MessageBox.Show($"Error deleting asset: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                assets.Remove(asset);
+                ClearInputFields();
+                MessageBox.Show("Asset deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            ClearFields();
+            ClearInputFields();
             dgvAssets.ClearSelection();
         }
 
-        private bool ValidateInput()
+        private bool ValidateInputs()
         {
             if (string.IsNullOrWhiteSpace(txtAssetName.Text))
             {
-                MessageBox.Show("Asset Name cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError("Please enter Asset Name.");
+                txtAssetName.Focus();
                 return false;
             }
 
-            if (cbCategory.SelectedIndex <= 0) // Index 0 is "Select category"
+            if (cbCategory.SelectedIndex <= 0)
             {
-                MessageBox.Show("Please select a valid category.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError("Please select a valid category.");
+                cbCategory.Focus();
                 return false;
             }
 
-            if (nudQuantity.Value <= 0)
+            if (nudQuantity.Value < 1)
             {
-                MessageBox.Show("Quantity must be greater than 0.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError("Quantity must be at least 1.");
+                nudQuantity.Focus();
                 return false;
             }
 
             if (!decimal.TryParse(txtPrice.Text, out decimal price) || price <= 0)
             {
-                MessageBox.Show("Price must be a valid number greater than 0.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError("Please enter a valid price greater than 0.");
+                txtPrice.Focus();
+                txtPrice.SelectAll();
                 return false;
             }
 
             return true;
         }
-        private void ClearFields()
+
+        private void ShowError(string message)
         {
-            txtAssetName.Text = "";
-            cbCategory.SelectedIndex = 0;
-            nudQuantity.Value = 0;
-            txtPrice.Text = "";
+            MessageBox.Show(message, "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        private void ClearInputFields()
+        {
+            txtAssetName.Clear();
+            cbCategory.SelectedIndex = 0;
+            nudQuantity.Value = 1;
+            txtPrice.Clear();
+            txtAssetName.Focus();
+        }
+
+        // Allow only numbers and one decimal point in Price field
+        private void TxtPrice_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
+                e.Handled = true;
+
+            if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
+                e.Handled = true;
+        }
+
+        // Optional: Add some sample data on first load (remove later if you connect to DB)
+        private void AssetsForm_Load(object sender, EventArgs e)
+        {
+            if (assets.Count == 0)
+            {
+                assets.Add(new Asset { Name = "Laptop Dell XPS", Category = "Electronics", Quantity = 10, Price = 1299.99m });
+                assets.Add(new Asset { Name = "Office Chair", Category = "Furniture", Quantity = 25, Price = 189.50m });
+                assets.Add(new Asset { Name = "Company Car - Toyota", Category = "Vehicles", Quantity = 3, Price = 35000m });
+            }
+        }
+
+        // ==================== ASSET MODEL (Inner Class) ====================
         public class Asset
         {
-            public string Name { get; set; }
-            public string Category { get; set; }
+            public string Name { get; set; } = string.Empty;
+            public string Category { get; set; } = string.Empty;
             public int Quantity { get; set; }
             public decimal Price { get; set; }
+
+            // Calculated property
             public decimal TotalValue => Quantity * Price;
+
+            public override string ToString() => $"{Name} ({Quantity} × ${Price:F2})";
         }
     }
 }

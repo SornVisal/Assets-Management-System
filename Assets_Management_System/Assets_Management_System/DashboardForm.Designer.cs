@@ -52,7 +52,7 @@
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelSidebar.Location = new System.Drawing.Point(0, 0);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(220, 450);
+            this.panelSidebar.Size = new System.Drawing.Size(240, 761);
             this.panelSidebar.TabIndex = 0;
             this.panelSidebar.Paint += new System.Windows.Forms.PaintEventHandler(this.panelSidebar_Paint);
             // 
@@ -60,11 +60,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Microsoft Tai Le", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Tai Le", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(22, 8);
+            this.label1.Location = new System.Drawing.Point(3, 37);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(170, 34);
+            this.label1.Size = new System.Drawing.Size(219, 45);
             this.label1.TabIndex = 0;
             this.label1.Text = "📦 AssetPro";
             // 
@@ -76,9 +76,9 @@
             this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogout.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogout.ForeColor = System.Drawing.Color.Black;
-            this.btnLogout.Location = new System.Drawing.Point(-1, 408);
+            this.btnLogout.Location = new System.Drawing.Point(-1, 719);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(220, 41);
+            this.btnLogout.Size = new System.Drawing.Size(240, 41);
             this.btnLogout.TabIndex = 5;
             this.btnLogout.Text = "Logout";
             this.btnLogout.UseVisualStyleBackColor = false;
@@ -90,12 +90,12 @@
             this.btnReport.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnReport.FlatAppearance.BorderSize = 0;
             this.btnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReport.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReport.Font = new System.Drawing.Font("Microsoft Tai Le", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReport.ForeColor = System.Drawing.Color.Black;
-            this.btnReport.Location = new System.Drawing.Point(-1, 219);
+            this.btnReport.Location = new System.Drawing.Point(-1, 278);
             this.btnReport.Name = "btnReport";
             this.btnReport.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btnReport.Size = new System.Drawing.Size(220, 41);
+            this.btnReport.Size = new System.Drawing.Size(240, 41);
             this.btnReport.TabIndex = 4;
             this.btnReport.Text = "📊 Reports";
             this.btnReport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -108,12 +108,12 @@
             this.btnStockTransaction.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStockTransaction.FlatAppearance.BorderSize = 0;
             this.btnStockTransaction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStockTransaction.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStockTransaction.Font = new System.Drawing.Font("Microsoft Tai Le", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStockTransaction.ForeColor = System.Drawing.Color.Black;
-            this.btnStockTransaction.Location = new System.Drawing.Point(-1, 172);
+            this.btnStockTransaction.Location = new System.Drawing.Point(-1, 231);
             this.btnStockTransaction.Name = "btnStockTransaction";
             this.btnStockTransaction.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btnStockTransaction.Size = new System.Drawing.Size(220, 41);
+            this.btnStockTransaction.Size = new System.Drawing.Size(240, 41);
             this.btnStockTransaction.TabIndex = 3;
             this.btnStockTransaction.Text = "🔄️ Stock Transactions";
             this.btnStockTransaction.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -126,12 +126,12 @@
             this.btnAssets.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAssets.FlatAppearance.BorderSize = 0;
             this.btnAssets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAssets.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAssets.Font = new System.Drawing.Font("Microsoft Tai Le", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAssets.ForeColor = System.Drawing.Color.Black;
-            this.btnAssets.Location = new System.Drawing.Point(-1, 125);
+            this.btnAssets.Location = new System.Drawing.Point(-1, 184);
             this.btnAssets.Name = "btnAssets";
             this.btnAssets.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btnAssets.Size = new System.Drawing.Size(220, 41);
+            this.btnAssets.Size = new System.Drawing.Size(240, 41);
             this.btnAssets.TabIndex = 2;
             this.btnAssets.Text = "📦 Assets";
             this.btnAssets.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -144,12 +144,12 @@
             this.btnDashboard.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDashboard.FlatAppearance.BorderSize = 0;
             this.btnDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDashboard.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDashboard.Font = new System.Drawing.Font("Microsoft Tai Le", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDashboard.ForeColor = System.Drawing.Color.Black;
-            this.btnDashboard.Location = new System.Drawing.Point(-1, 78);
+            this.btnDashboard.Location = new System.Drawing.Point(-1, 137);
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btnDashboard.Size = new System.Drawing.Size(220, 41);
+            this.btnDashboard.Size = new System.Drawing.Size(240, 41);
             this.btnDashboard.TabIndex = 1;
             this.btnDashboard.Text = "🪟 Dashboard";
             this.btnDashboard.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -160,13 +160,11 @@
             // 
             this.panelMain.AutoScroll = true;
             this.panelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.panelMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelMain.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelMain.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.panelMain.Location = new System.Drawing.Point(0, 0);
+            this.panelMain.Location = new System.Drawing.Point(246, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(824, 450);
+            this.panelMain.Size = new System.Drawing.Size(1008, 761);
             this.panelMain.TabIndex = 1;
             this.panelMain.Paint += new System.Windows.Forms.PaintEventHandler(this.panelMain_Paint);
             // 
@@ -175,11 +173,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(824, 450);
+            this.ClientSize = new System.Drawing.Size(1264, 761);
             this.Controls.Add(this.panelSidebar);
             this.Controls.Add(this.panelMain);
             this.Name = "DashboardForm";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.DashboardForm_Load_1);
             this.panelSidebar.ResumeLayout(false);
             this.panelSidebar.PerformLayout();
             this.ResumeLayout(false);
