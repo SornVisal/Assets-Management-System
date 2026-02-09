@@ -75,11 +75,6 @@
     <Compile Include="DashboardForm.Designer.cs">
       <DependentUpon>DashboardForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AssetsForm.cs" />
-    <Compile Include="Forms\DashboardForm.cs" />
-    <Compile Include="Forms\LoginForm.cs" />
-    <Compile Include="Forms\ReportForm.cs" />
-    <Compile Include="Forms\TransactionForm.cs" />
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>

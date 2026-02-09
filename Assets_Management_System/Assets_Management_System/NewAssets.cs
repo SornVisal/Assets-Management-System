@@ -170,5 +170,10 @@ namespace Assets_Management_System
             if (cbStatus.Text != "Assigned")
                 cbEmployee.SelectedIndex = 0; // Reset to "None"
         }
+
+        private void NewAssets_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

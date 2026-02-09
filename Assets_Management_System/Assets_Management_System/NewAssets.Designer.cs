@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnUpload = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
             this.txtNotes = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
@@ -72,7 +73,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnUpload = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImage)).BeginInit();
@@ -135,6 +135,19 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(761, 789);
             this.panel1.TabIndex = 24;
+            // 
+            // btnUpload
+            // 
+            this.btnUpload.BackColor = System.Drawing.Color.White;
+            this.btnUpload.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpload.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.btnUpload.Location = new System.Drawing.Point(389, 86);
+            this.btnUpload.Margin = new System.Windows.Forms.Padding(2);
+            this.btnUpload.Name = "btnUpload";
+            this.btnUpload.Size = new System.Drawing.Size(114, 26);
+            this.btnUpload.TabIndex = 15;
+            this.btnUpload.Text = "Upload";
+            this.btnUpload.UseVisualStyleBackColor = false;
             // 
             // label18
             // 
@@ -324,7 +337,6 @@
             this.cbCategory2.Size = new System.Drawing.Size(253, 27);
             this.cbCategory2.TabIndex = 12;
             this.cbCategory2.Text = "  Select category";
-//            this.cbCategory2.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label11
             // 
@@ -467,7 +479,6 @@
             this.btnClear.TabIndex = 17;
             this.btnClear.Text = "↩️  Clear";
             this.btnClear.UseVisualStyleBackColor = false;
-//            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // btnDelete
             // 
@@ -481,7 +492,6 @@
             this.btnDelete.TabIndex = 16;
             this.btnDelete.Text = "🗑️ Delete";
             this.btnDelete.UseVisualStyleBackColor = false;
-//            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnUpdate
             // 
@@ -495,7 +505,6 @@
             this.btnUpdate.TabIndex = 15;
             this.btnUpdate.Text = "✏️ Update";
             this.btnUpdate.UseVisualStyleBackColor = false;
-//            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnAdd
             // 
@@ -509,7 +518,6 @@
             this.btnAdd.TabIndex = 14;
             this.btnAdd.Text = "+ Add";
             this.btnAdd.UseVisualStyleBackColor = false;
-//            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // cbCategory
             // 
@@ -594,19 +602,6 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // btnUpload
-            // 
-            this.btnUpload.BackColor = System.Drawing.Color.White;
-            this.btnUpload.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpload.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.btnUpload.Location = new System.Drawing.Point(389, 86);
-            this.btnUpload.Margin = new System.Windows.Forms.Padding(2);
-            this.btnUpload.Name = "btnUpload";
-            this.btnUpload.Size = new System.Drawing.Size(114, 26);
-            this.btnUpload.TabIndex = 15;
-            this.btnUpload.Text = "Upload";
-            this.btnUpload.UseVisualStyleBackColor = false;
-            // 
             // NewAssets
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
@@ -616,6 +611,7 @@
             this.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "NewAssets";
             this.Text = "NewAssets";
+            this.Load += new System.EventHandler(this.NewAssets_Load);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel1.ResumeLayout(false);
