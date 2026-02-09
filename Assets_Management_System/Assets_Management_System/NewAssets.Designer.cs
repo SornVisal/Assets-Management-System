@@ -324,7 +324,7 @@
             this.cbCategory2.Size = new System.Drawing.Size(253, 27);
             this.cbCategory2.TabIndex = 12;
             this.cbCategory2.Text = "  Select category";
-            this.cbCategory2.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+//            this.cbCategory2.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label11
             // 
@@ -467,7 +467,7 @@
             this.btnClear.TabIndex = 17;
             this.btnClear.Text = "↩️  Clear";
             this.btnClear.UseVisualStyleBackColor = false;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+//            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // btnDelete
             // 
@@ -481,7 +481,7 @@
             this.btnDelete.TabIndex = 16;
             this.btnDelete.Text = "🗑️ Delete";
             this.btnDelete.UseVisualStyleBackColor = false;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+//            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnUpdate
             // 
@@ -495,7 +495,7 @@
             this.btnUpdate.TabIndex = 15;
             this.btnUpdate.Text = "✏️ Update";
             this.btnUpdate.UseVisualStyleBackColor = false;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+//            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnAdd
             // 
@@ -509,7 +509,7 @@
             this.btnAdd.TabIndex = 14;
             this.btnAdd.Text = "+ Add";
             this.btnAdd.UseVisualStyleBackColor = false;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+//            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // cbCategory
             // 
