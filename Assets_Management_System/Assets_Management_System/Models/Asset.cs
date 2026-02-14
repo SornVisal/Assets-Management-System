@@ -12,6 +12,7 @@ namespace Assets_Management_System.Models
         public string SerialNumber { get; set; } = "";
         public DateTime PurchaseDate { get; set; }
         public decimal Price { get; set; }
+        public int Quantity { get; set; }
         public string EmployeeName { get; set; } = "None";
         public string Status { get; set; } = "Available";
         public string Notes { get; set; } = "";

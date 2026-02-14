@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="Services\AssetService.cs" />
     <Compile Include="Services\DbHelper.cs" />
+    <Compile Include="TransactionClass.cs" />
     <Compile Include="TransactionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +131,9 @@
     </Compile>
     <EmbeddedResource Include="ReportForm.resx">
       <DependentUpon>ReportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TransactionForm.resx">
+      <DependentUpon>TransactionForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
