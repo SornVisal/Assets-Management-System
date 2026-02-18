@@ -189,5 +189,10 @@ namespace Assets_Management_System
 
         private void panel1_Paint(object sender, PaintEventArgs e) { }
         private void panel5_Paint(object sender, PaintEventArgs e) { }
+
+        private void dgvAssets_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

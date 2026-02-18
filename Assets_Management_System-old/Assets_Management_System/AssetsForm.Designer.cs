@@ -65,6 +65,7 @@
             this.dgvAssets.RowTemplate.Height = 28;
             this.dgvAssets.Size = new System.Drawing.Size(1124, 592);
             this.dgvAssets.TabIndex = 3;
+            this.dgvAssets.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAssets_CellContentClick);
             // 
             // pnlContent
             // 
