@@ -71,6 +71,13 @@ namespace Assets_Management_System
                 // 👇👇👇 THIS IS WHERE YOUR CODE GOES 👇👇👇
                 dgvAssets.Columns.Add(new DataGridViewTextBoxColumn
                 {
+                    DataPropertyName = "AssetCode",
+                    HeaderText = "Asset Code",
+                    Width = 100
+                });
+
+                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn
+                {
                     DataPropertyName = "Id",
                     HeaderText = "ID",
                     Width = 40
@@ -144,6 +151,7 @@ namespace Assets_Management_System
                 newAssetsPanel.Dock = DockStyle.Fill;
             }
 
+            newAssetsPanel.Visible = true;   // 🔥 ADD THIS
             newAssetsPanel.Initialize(service, asset);
             newAssetsPanel.BringToFront();
         }

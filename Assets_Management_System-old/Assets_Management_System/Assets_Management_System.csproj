@@ -69,6 +69,12 @@
     <Compile Include="AssetsForm.Designer.cs">
       <DependentUpon>AssetsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AssignAssetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssignAssetForm.Designer.cs">
+      <DependentUpon>AssignAssetForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="DashboardForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,6 +107,7 @@
     </Compile>
     <Compile Include="Services\AssetService.cs" />
     <Compile Include="Services\DbHelper.cs" />
+    <Compile Include="Services\TransactionService.cs" />
     <Compile Include="TransactionClass.cs" />
     <Compile Include="TransactionForm.cs">
       <SubType>Form</SubType>
@@ -110,6 +117,9 @@
     </Compile>
     <EmbeddedResource Include="AssetsForm.resx">
       <DependentUpon>AssetsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AssignAssetForm.resx">
+      <DependentUpon>AssignAssetForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DashboardForm.resx">
       <DependentUpon>DashboardForm.cs</DependentUpon>
