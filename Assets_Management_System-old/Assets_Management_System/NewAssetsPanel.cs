@@ -10,10 +10,9 @@ namespace Assets_Management_System.Forms
     public partial class NewAssetsPanel : UserControl
     {
         private AssetService service;
-        private Asset editingAsset = null;
+        private Asset currentAsset = null;
         private string imagePath = "";
 
-        // Event to notify parent form when save/cancel is clicked
         public event EventHandler OnSaveCompleted;
         public event EventHandler OnCancelled;
 
@@ -22,82 +21,59 @@ namespace Assets_Management_System.Forms
             InitializeComponent();
         }
 
-        public void Initialize(AssetService s, Asset asset = null)
+        // ===============================
+        // INITIALIZE (CALLED FROM AssetsForm)
+        // ===============================
+        public void Initialize(AssetService service, Asset asset)
         {
-            service = s;
-            editingAsset = asset;
-            imagePath = "";
+            this.service = service;
 
-            LoadCombos();
+            LoadCategories();   // 🔴 MUST be first
+            ClearForm();        // 🔴 then reset form
 
-            if (asset != null)
+            currentAsset = asset;
+
+            if (asset == null)
             {
-                LoadData(asset);
+                txtCode.Text = "(Auto)";
             }
             else
             {
-                ClearForm();
+                LoadAsset(asset);
             }
         }
 
-        private void ClearForm()
+        // ===============================
+        // LOAD CATEGORIES
+        // ===============================
+        private void LoadCategories()
         {
-            txtName.Text = "";
-            cbCategory2.SelectedIndex = 0;
-            txtSerial.Text = "";
-            dtPurchase.Value = DateTime.Now;
-            txtPrice.Text = "0.00";
-            cbEmployee.SelectedIndex = 0;
-            cbStatus.SelectedIndex = 0;
-            txtNotes.Text = "";
-            pictureBoxImage.Image = null;
-            imagePath = "";
+            cbCategory.Items.Clear();
+
+            cbCategory.Items.AddRange(new string[]
+            {
+                "PC", "Laptop", "Printer", "Router",
+                "Switch", "Monitor", "Furniture", "Vehicles", "Other"
+            });
+
+            cbCategory.SelectedIndex = -1;
+            cbCategory.Text = "Select category";
         }
 
-        private void LoadCombos()
+        // ===============================
+        // LOAD ASSET (EDIT MODE)
+        // ===============================
+        private void LoadAsset(Asset asset)
         {
-            if (cbCategory2.Items.Count == 0)
-            {
-                cbCategory2.Items.AddRange(new string[]
-                {
-                    "PC", "Laptop", "Printer", "Router",
-                    "Switch", "Monitor", "Furniture", "Vehicles", "Other"
-                });
-            }
+            txtCode.Text = asset.AssetCode;
+            txtName.Text = asset.Name;
+            cbCategory.Text = asset.Category;
+            txtSerial.Text = asset.SerialNumber;
+            dtPurchase.Value = asset.PurchaseDate;
+            txtPrice.Text = asset.Price.ToString("F2");
+            txtNotes.Text = asset.Notes;
 
-            if (cbStatus.Items.Count == 0)
-            {
-                cbStatus.Items.AddRange(new string[]
-                {
-                    "Available", "Assigned", "Repair", "Retired"
-                });
-            }
-
-            if (cbEmployee.Items.Count == 0)
-            {
-                cbEmployee.Items.AddRange(new string[]
-                {
-                    "None", "Employee 1", "Employee 2", "Employee 3", "John Smith", "Jane Doe"
-                });
-            }
-
-            cbCategory2.SelectedIndex = 0;
-            cbStatus.SelectedIndex = 0;
-            cbEmployee.SelectedIndex = 0;
-        }
-
-        private void LoadData(Asset a)
-        {
-            txtName.Text = a.Name ?? "";
-            cbCategory2.Text = a.Category ?? "PC";
-            txtSerial.Text = a.SerialNumber ?? "";
-            dtPurchase.Value = a.PurchaseDate != DateTime.MinValue ? a.PurchaseDate : DateTime.Now;
-            txtPrice.Text = a.Price.ToString("F2");
-            cbEmployee.Text = a.EmployeeName ?? "None";
-            cbStatus.Text = a.Status ?? "Available";
-            txtNotes.Text = a.Notes ?? "";
-
-            imagePath = a.ImagePath ?? "";
+            imagePath = asset.ImagePath ?? "";
 
             if (!string.IsNullOrEmpty(imagePath) && File.Exists(imagePath))
             {
@@ -112,91 +88,102 @@ namespace Assets_Management_System.Forms
             }
         }
 
+        // ===============================
+        // CLEAR FORM (ADD MODE)
+        // ===============================
+        private void ClearForm()
+        {
+            txtName.Text = "";
+            cbCategory.SelectedIndex = -1;
+            cbCategory.Text = "Select category";
+            txtSerial.Text = "";
+            dtPurchase.Value = DateTime.Now;
+            txtPrice.Text = "0.00";
+            txtNotes.Text = "";
+            pictureBoxImage.Image = null;
+            imagePath = "";
+        }
+
+        // ===============================
+        // UPLOAD IMAGE
+        // ===============================
         private void btnUpload_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Images|*.jpg;*.png;*.jpeg;*.bmp";
-
-            if (ofd.ShowDialog() == DialogResult.OK)
+            using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                imagePath = ofd.FileName;
-                try
+                ofd.Filter = "Images|*.jpg;*.png;*.jpeg;*.bmp";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
                 {
+                    imagePath = ofd.FileName;
                     pictureBoxImage.Image = Image.FromFile(imagePath);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading image: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    imagePath = "";
                 }
             }
         }
 
+        // ===============================
+        // SAVE
+        // ===============================
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtName.Text))
             {
-                MessageBox.Show("Asset name is required", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtName.Focus();
+                MessageBox.Show("Asset name is required.");
                 return;
             }
 
-            if (!decimal.TryParse(txtPrice.Text, out decimal price) || price < 0)
+            if (cbCategory.SelectedIndex == -1)
             {
-                MessageBox.Show("Invalid price format", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtPrice.Focus();
+                MessageBox.Show("Please select a category.");
                 return;
             }
 
-            try
+            if (!decimal.TryParse(txtPrice.Text, out decimal price))
             {
-                Asset asset = new Asset()
+                MessageBox.Show("Invalid price.");
+                return;
+            }
+
+            if (currentAsset == null)
+            {
+                // ADD
+                var asset = new Asset
                 {
-                    Name = txtName.Text.Trim(),
-                    Category = cbCategory2.Text,
-                    SerialNumber = txtSerial.Text.Trim(),
+                    Name = txtName.Text,
+                    Category = cbCategory.Text,
+                    SerialNumber = txtSerial.Text,
                     PurchaseDate = dtPurchase.Value,
                     Price = price,
-                    EmployeeName = cbEmployee.Text,
-                    Status = cbStatus.Text,
-                    Notes = txtNotes.Text.Trim(),
+                    Status = "Available",
+                    Notes = txtNotes.Text,
                     ImagePath = imagePath
                 };
 
-                if (editingAsset == null)
-                {
-                    service.Add(asset);
-                    MessageBox.Show("Asset added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    asset.Id = editingAsset.Id;
-                    service.Update(asset);
-                    MessageBox.Show("Asset updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-
-                OnSaveCompleted?.Invoke(this, EventArgs.Empty);
+                service.Add(asset);
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Error saving asset: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // EDIT
+                currentAsset.Name = txtName.Text;
+                currentAsset.Category = cbCategory.Text;
+                currentAsset.SerialNumber = txtSerial.Text;
+                currentAsset.PurchaseDate = dtPurchase.Value;
+                currentAsset.Price = price;
+                currentAsset.Notes = txtNotes.Text;
+                currentAsset.ImagePath = imagePath;
+
+                service.Update(currentAsset);
             }
+
+            OnSaveCompleted?.Invoke(this, EventArgs.Empty);
         }
 
+        // ===============================
+        // CANCEL
+        // ===============================
         private void btnCancel_Click(object sender, EventArgs e)
         {
             OnCancelled?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void cbStatus_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            cbEmployee.Enabled = cbStatus.Text == "Assigned";
-            if (cbStatus.Text != "Assigned")
-                cbEmployee.SelectedIndex = 0;
-        }
-
-        private void NewAssetsPanel_Load(object sender, EventArgs e)
-        {
         }
     }
 }

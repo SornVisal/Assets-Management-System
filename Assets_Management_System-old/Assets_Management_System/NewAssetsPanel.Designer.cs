@@ -31,16 +31,16 @@
             this.components = new System.ComponentModel.Container();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtCode = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.btnUpload = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
             this.txtNotes = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.pictureBoxImage = new System.Windows.Forms.PictureBox();
             this.dtPurchase = new System.Windows.Forms.DateTimePicker();
-            this.cbEmployee = new System.Windows.Forms.ComboBox();
             this.cbStatus = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -108,23 +108,23 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.btnSave);
+            this.panel1.Controls.Add(this.txtCode);
+            this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.btnUpload);
             this.panel1.Controls.Add(this.label18);
             this.panel1.Controls.Add(this.txtNotes);
             this.panel1.Controls.Add(this.label17);
             this.panel1.Controls.Add(this.pictureBoxImage);
             this.panel1.Controls.Add(this.dtPurchase);
-            this.panel1.Controls.Add(this.cbEmployee);
             this.panel1.Controls.Add(this.cbStatus);
             this.panel1.Controls.Add(this.label16);
-            this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.txtPrice);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.txtSerial);
             this.panel1.Controls.Add(this.label10);
             this.panel1.Controls.Add(this.btnCancel);
-            this.panel1.Controls.Add(this.btnSave);
             this.panel1.Controls.Add(this.cbCategory2);
             this.panel1.Controls.Add(this.label11);
             this.panel1.Controls.Add(this.txtName);
@@ -135,6 +135,28 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(761, 789);
             this.panel1.TabIndex = 24;
+            // 
+            // txtCode
+            // 
+            this.txtCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCode.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCode.Location = new System.Drawing.Point(13, 111);
+            this.txtCode.Margin = new System.Windows.Forms.Padding(2);
+            this.txtCode.Name = "txtCode";
+            this.txtCode.ReadOnly = true;
+            this.txtCode.Size = new System.Drawing.Size(253, 26);
+            this.txtCode.TabIndex = 35;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(9, 150);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(94, 19);
+            this.label15.TabIndex = 34;
+            this.label15.Text = "Asset Name";
             // 
             // btnUpload
             // 
@@ -195,29 +217,17 @@
             // 
             // dtPurchase
             // 
-            this.dtPurchase.Location = new System.Drawing.Point(13, 306);
+            this.dtPurchase.Location = new System.Drawing.Point(13, 362);
             this.dtPurchase.Name = "dtPurchase";
             this.dtPurchase.Size = new System.Drawing.Size(253, 20);
             this.dtPurchase.TabIndex = 29;
-            // 
-            // cbEmployee
-            // 
-            this.cbEmployee.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbEmployee.FormattingEnabled = true;
-            this.cbEmployee.Location = new System.Drawing.Point(13, 437);
-            this.cbEmployee.Margin = new System.Windows.Forms.Padding(2);
-            this.cbEmployee.Name = "cbEmployee";
-            this.cbEmployee.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cbEmployee.Size = new System.Drawing.Size(253, 27);
-            this.cbEmployee.TabIndex = 28;
-            this.cbEmployee.Text = " Select Employee Name";
             // 
             // cbStatus
             // 
             this.cbStatus.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbStatus.FormattingEnabled = true;
             this.cbStatus.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.cbStatus.Location = new System.Drawing.Point(13, 505);
+            this.cbStatus.Location = new System.Drawing.Point(13, 494);
             this.cbStatus.Margin = new System.Windows.Forms.Padding(2);
             this.cbStatus.Name = "cbStatus";
             this.cbStatus.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -229,29 +239,18 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(9, 482);
+            this.label16.Location = new System.Drawing.Point(9, 471);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(53, 19);
             this.label16.TabIndex = 26;
             this.label16.Text = "Status";
             // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(9, 415);
-            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(93, 19);
-            this.label15.TabIndex = 24;
-            this.label15.Text = "Employee    ";
-            // 
             // txtPrice
             // 
             this.txtPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPrice.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPrice.Location = new System.Drawing.Point(13, 374);
+            this.txtPrice.Location = new System.Drawing.Point(13, 430);
             this.txtPrice.Margin = new System.Windows.Forms.Padding(2);
             this.txtPrice.Name = "txtPrice";
             this.txtPrice.Size = new System.Drawing.Size(253, 26);
@@ -261,7 +260,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(9, 347);
+            this.label8.Location = new System.Drawing.Point(9, 403);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(43, 19);
@@ -272,7 +271,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(9, 280);
+            this.label9.Location = new System.Drawing.Point(9, 336);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(109, 19);
@@ -283,7 +282,7 @@
             // 
             this.txtSerial.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSerial.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSerial.Location = new System.Drawing.Point(13, 240);
+            this.txtSerial.Location = new System.Drawing.Point(13, 296);
             this.txtSerial.Margin = new System.Windows.Forms.Padding(2);
             this.txtSerial.Name = "txtSerial";
             this.txtSerial.Size = new System.Drawing.Size(253, 26);
@@ -293,7 +292,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(9, 213);
+            this.label10.Location = new System.Drawing.Point(9, 269);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(109, 19);
@@ -312,6 +311,7 @@
             this.btnCancel.TabIndex = 17;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnSave
             // 
@@ -325,12 +325,13 @@
             this.btnSave.TabIndex = 14;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // cbCategory2
             // 
             this.cbCategory2.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbCategory2.FormattingEnabled = true;
-            this.cbCategory2.Location = new System.Drawing.Point(13, 177);
+            this.cbCategory2.Location = new System.Drawing.Point(13, 233);
             this.cbCategory2.Margin = new System.Windows.Forms.Padding(2);
             this.cbCategory2.Name = "cbCategory2";
             this.cbCategory2.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -342,7 +343,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(9, 150);
+            this.label11.Location = new System.Drawing.Point(9, 206);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(72, 19);
@@ -353,7 +354,7 @@
             // 
             this.txtName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtName.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtName.Location = new System.Drawing.Point(13, 117);
+            this.txtName.Location = new System.Drawing.Point(13, 171);
             this.txtName.Margin = new System.Windows.Forms.Padding(2);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(253, 26);
@@ -366,9 +367,9 @@
             this.label12.Location = new System.Drawing.Point(9, 90);
             this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(94, 19);
+            this.label12.Size = new System.Drawing.Size(87, 19);
             this.label12.TabIndex = 4;
-            this.label12.Text = "Asset Name";
+            this.label12.Text = "Asset Code";
             // 
             // panel2
             // 
@@ -602,16 +603,15 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // NewAssets
+            // NewAssetsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(839, 813);
             this.Controls.Add(this.panel3);
             this.Font = new System.Drawing.Font("Times New Roman", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "NewAssets";
-            this.Text = "NewAssets";
-//            this.Load += new System.EventHandler(this.NewAssets_Load);
+            this.Name = "NewAssetsPanel";
+            this.Size = new System.Drawing.Size(839, 813);
+ //           this.Load += new System.EventHandler(this.NewAssetsPanel_Load_1);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -644,7 +644,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox txtPrice;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
@@ -664,12 +663,13 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker dtPurchase;
-        private System.Windows.Forms.ComboBox cbEmployee;
         private System.Windows.Forms.ComboBox cbStatus;
         private System.Windows.Forms.TextBox txtNotes;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.PictureBox pictureBoxImage;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button btnUpload;
+        private System.Windows.Forms.TextBox txtCode;
+        private System.Windows.Forms.Label label15;
     }
 }

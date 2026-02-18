@@ -76,7 +76,6 @@ namespace Assets_Management_System
         private void btnStockTransaction_Click(object sender, EventArgs e)
         {
             ActivateButton(btnStockTransaction);
-            LoadForm(new TransactionForm(assets));
         }
 
         private void btnReport_Click(object sender, EventArgs e)

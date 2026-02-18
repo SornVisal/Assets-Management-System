@@ -32,31 +32,24 @@ namespace Assets_Management_System
                 service.Add(new Asset
                 {
                     Name = "Laptop Dell XPS",
-                    Category = "Electronics",
+                    Category = "Laptop",
                     SerialNumber = "SN001",
+                    PurchaseDate = DateTime.Today,
                     Price = 1299.99m,
                     Status = "Available"
                 });
+
                 service.Add(new Asset
                 {
                     Name = "Office Chair",
                     Category = "Furniture",
                     SerialNumber = "SN002",
+                    PurchaseDate = DateTime.Today,
                     Price = 189.50m,
                     Status = "Available"
                 });
-                service.Add(new Asset
-                {
-                    Name = "Company Car - Toyota",
-                    Category = "Vehicles",
-                    SerialNumber = "SN003",
-                    Price = 35000m,
-                    EmployeeName = "John Smith",
-                    Status = "Assigned"
-                });
             }
 
-            // Create the UserControl
             newAssetsPanel = new NewAssetsPanel();
             newAssetsPanel.OnSaveCompleted += (s, evt) => HideFormPanel();
             newAssetsPanel.OnCancelled += (s, evt) => HideFormPanel();
@@ -71,58 +64,79 @@ namespace Assets_Management_System
                 bindingSource.DataSource = service.GetAll();
                 dgvAssets.DataSource = bindingSource;
 
+                // VERY IMPORTANT
                 dgvAssets.AutoGenerateColumns = false;
                 dgvAssets.Columns.Clear();
 
-                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Id", HeaderText = "ID", Width = 40 });
-                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Name", HeaderText = "Asset Name", Width = 150 });
-                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Category", HeaderText = "Category", Width = 100 });
-                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "SerialNumber", HeaderText = "Serial #", Width = 110 });
+                // 👇👇👇 THIS IS WHERE YOUR CODE GOES 👇👇👇
+                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "Id",
+                    HeaderText = "ID",
+                    Width = 40
+                });
 
-                var purchaseDateColumn = new DataGridViewTextBoxColumn { DataPropertyName = "PurchaseDate", HeaderText = "Purchase Date", Width = 110 };
+                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "Name",
+                    HeaderText = "Asset Name",
+                    Width = 150
+                });
+
+                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "Category",
+                    HeaderText = "Category",
+                    Width = 100
+                });
+
+                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "SerialNumber",
+                    HeaderText = "Serial #",
+                    Width = 110
+                });
+
+                var purchaseDateColumn = new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "PurchaseDate",
+                    HeaderText = "Purchase Date",
+                    Width = 110
+                };
                 purchaseDateColumn.DefaultCellStyle.Format = "yyyy-MM-dd";
                 dgvAssets.Columns.Add(purchaseDateColumn);
 
-                var priceColumn = new DataGridViewTextBoxColumn { DataPropertyName = "Price", HeaderText = "Price", Width = 90 };
+                var priceColumn = new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "Price",
+                    HeaderText = "Price",
+                    Width = 90
+                };
                 priceColumn.DefaultCellStyle.Format = "$#,##0.00";
                 dgvAssets.Columns.Add(priceColumn);
 
-                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "EmployeeName", HeaderText = "Employee", Width = 120 });
-                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Status", HeaderText = "Status", Width = 90 });
-                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ImagePath", HeaderText = "Image Path", Width = 150 });
-                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Notes", HeaderText = "Notes", Width = 150 });
+                dgvAssets.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "Status",
+                    HeaderText = "Status",
+                    Width = 90
+                });
 
-                dgvAssets.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(0, 102, 204);
-                dgvAssets.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-                dgvAssets.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 10, FontStyle.Bold);
-
-                dgvAssets.DefaultCellStyle.BackColor = Color.White;
-                dgvAssets.DefaultCellStyle.ForeColor = Color.Black;
-                dgvAssets.DefaultCellStyle.Font = new Font("Arial", 9);
-
-                dgvAssets.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 245, 250);
-                dgvAssets.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
-
-                dgvAssets.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 150, 255);
-                dgvAssets.DefaultCellStyle.SelectionForeColor = Color.White;
-
-                dgvAssets.GridColor = Color.LightGray;
+                // grid behavior (you already had this part)
                 dgvAssets.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvAssets.MultiSelect = false;
                 dgvAssets.ReadOnly = true;
                 dgvAssets.AllowUserToAddRows = false;
-                dgvAssets.RowHeadersWidth = 30;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading grid: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message);
             }
         }
 
-        private void ShowFormPanel(Asset asset = null)
+        private void ShowFormPanel(Asset asset)
         {
             dgvAssets.Visible = false;
-            newAssetsPanel.Initialize(service, asset);
 
             if (!pnlContent.Controls.Contains(newAssetsPanel))
             {
@@ -130,7 +144,7 @@ namespace Assets_Management_System
                 newAssetsPanel.Dock = DockStyle.Fill;
             }
 
-            newAssetsPanel.Visible = true;
+            newAssetsPanel.Initialize(service, asset);
             newAssetsPanel.BringToFront();
         }
 
@@ -150,15 +164,12 @@ namespace Assets_Management_System
         {
             if (dgvAssets.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select an asset to edit.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select an asset to edit.");
                 return;
             }
 
-            var selectedAsset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
-            if (selectedAsset != null)
-            {
-                ShowFormPanel(selectedAsset);
-            }
+            var asset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
+            ShowFormPanel(asset); // EDIT MODE
         }
 
         private void btnDelete_Click_2(object sender, EventArgs e)

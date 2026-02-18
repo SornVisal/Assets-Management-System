@@ -83,7 +83,7 @@
     </Compile>
     <Compile Include="Models\Asset.cs" />
     <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\Transaction.cs" />
+    <Compile Include="Models\TransactionClass.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="NewAssetsPanel.cs">
       <SubType>UserControl</SubType>

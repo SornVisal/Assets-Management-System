@@ -7,6 +7,7 @@ namespace Assets_Management_System.Models
         private static int _nextId = 1;
 
         public int Id { get; set; }
+        public string AssetCode { get; set; }
         public string Name { get; set; } = "";
         public string Category { get; set; } = "";
         public string SerialNumber { get; set; } = "";
