@@ -16,8 +16,15 @@ namespace Assets_Management_System
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoginForm());
 
+            // Seed database automatically if empty
+            try
+            {
+                new Services.DataSeeder().Seed();
+            }
+            catch { /* Ignore seeding errors here */ }
+
+            Application.Run(new LoginForm());
         }
     }
 }

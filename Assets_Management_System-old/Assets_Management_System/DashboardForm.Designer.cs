@@ -41,8 +41,8 @@
             // 
             // panelSidebar
             // 
-            this.panelSidebar.BackColor = System.Drawing.Color.White;
-            this.panelSidebar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this.panelSidebar.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.panelSidebar.Controls.Add(this.label1);
             this.panelSidebar.Controls.Add(this.btnLogout);
             this.panelSidebar.Controls.Add(this.btnReport);
@@ -52,33 +52,32 @@
             this.panelSidebar.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelSidebar.Location = new System.Drawing.Point(0, 0);
             this.panelSidebar.Name = "panelSidebar";
-            this.panelSidebar.Size = new System.Drawing.Size(240, 761);
+            this.panelSidebar.Size = new System.Drawing.Size(260, 761);
             this.panelSidebar.TabIndex = 0;
-            this.panelSidebar.Paint += new System.Windows.Forms.PaintEventHandler(this.panelSidebar_Paint);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Microsoft Tai Le", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(3, 37);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(20, 30);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(219, 45);
+            this.label1.Size = new System.Drawing.Size(185, 45);
             this.label1.TabIndex = 0;
             this.label1.Text = "📦 AssetPro";
             // 
             // btnLogout
             // 
-            this.btnLogout.BackColor = System.Drawing.Color.White;
+            this.btnLogout.BackColor = System.Drawing.Color.Transparent;
             this.btnLogout.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLogout.FlatAppearance.BorderSize = 0;
             this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLogout.Font = new System.Drawing.Font("Microsoft Tai Le", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogout.ForeColor = System.Drawing.Color.Black;
-            this.btnLogout.Location = new System.Drawing.Point(-1, 719);
+            this.btnLogout.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnLogout.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(63)))), ((int)(((byte)(94)))));
+            this.btnLogout.Location = new System.Drawing.Point(0, 690);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(240, 41);
+            this.btnLogout.Size = new System.Drawing.Size(260, 50);
             this.btnLogout.TabIndex = 5;
             this.btnLogout.Text = "Logout";
             this.btnLogout.UseVisualStyleBackColor = false;
@@ -86,72 +85,72 @@
             // 
             // btnReport
             // 
-            this.btnReport.BackColor = System.Drawing.Color.White;
+            this.btnReport.BackColor = System.Drawing.Color.Transparent;
             this.btnReport.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnReport.FlatAppearance.BorderSize = 0;
             this.btnReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnReport.Font = new System.Drawing.Font("Microsoft Tai Le", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReport.ForeColor = System.Drawing.Color.Black;
-            this.btnReport.Location = new System.Drawing.Point(-1, 278);
+            this.btnReport.Font = new System.Drawing.Font("Segoe UI Semibold", 13F);
+            this.btnReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
+            this.btnReport.Location = new System.Drawing.Point(10, 290);
             this.btnReport.Name = "btnReport";
-            this.btnReport.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btnReport.Size = new System.Drawing.Size(240, 41);
+            this.btnReport.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnReport.Size = new System.Drawing.Size(240, 45);
             this.btnReport.TabIndex = 4;
-            this.btnReport.Text = "📊 Reports";
+            this.btnReport.Text = "📊  Reports";
             this.btnReport.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnReport.UseVisualStyleBackColor = false;
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
             // btnStockTransaction
             // 
-            this.btnStockTransaction.BackColor = System.Drawing.Color.White;
+            this.btnStockTransaction.BackColor = System.Drawing.Color.Transparent;
             this.btnStockTransaction.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStockTransaction.FlatAppearance.BorderSize = 0;
             this.btnStockTransaction.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStockTransaction.Font = new System.Drawing.Font("Microsoft Tai Le", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStockTransaction.ForeColor = System.Drawing.Color.Black;
-            this.btnStockTransaction.Location = new System.Drawing.Point(-1, 231);
+            this.btnStockTransaction.Font = new System.Drawing.Font("Segoe UI Semibold", 13F);
+            this.btnStockTransaction.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
+            this.btnStockTransaction.Location = new System.Drawing.Point(10, 240);
             this.btnStockTransaction.Name = "btnStockTransaction";
-            this.btnStockTransaction.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btnStockTransaction.Size = new System.Drawing.Size(240, 41);
+            this.btnStockTransaction.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnStockTransaction.Size = new System.Drawing.Size(240, 45);
             this.btnStockTransaction.TabIndex = 3;
-            this.btnStockTransaction.Text = "🔄️ Stock Transactions";
+            this.btnStockTransaction.Text = "🔄️  Transactions";
             this.btnStockTransaction.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnStockTransaction.UseVisualStyleBackColor = false;
             this.btnStockTransaction.Click += new System.EventHandler(this.btnStockTransaction_Click);
             // 
             // btnAssets
             // 
-            this.btnAssets.BackColor = System.Drawing.Color.White;
+            this.btnAssets.BackColor = System.Drawing.Color.Transparent;
             this.btnAssets.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAssets.FlatAppearance.BorderSize = 0;
             this.btnAssets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAssets.Font = new System.Drawing.Font("Microsoft Tai Le", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAssets.ForeColor = System.Drawing.Color.Black;
-            this.btnAssets.Location = new System.Drawing.Point(-1, 184);
+            this.btnAssets.Font = new System.Drawing.Font("Segoe UI Semibold", 13F);
+            this.btnAssets.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
+            this.btnAssets.Location = new System.Drawing.Point(10, 190);
             this.btnAssets.Name = "btnAssets";
-            this.btnAssets.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btnAssets.Size = new System.Drawing.Size(240, 41);
+            this.btnAssets.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnAssets.Size = new System.Drawing.Size(240, 45);
             this.btnAssets.TabIndex = 2;
-            this.btnAssets.Text = "📦 Assets";
+            this.btnAssets.Text = "📦  Assets";
             this.btnAssets.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAssets.UseVisualStyleBackColor = false;
             this.btnAssets.Click += new System.EventHandler(this.btnAssets_Click);
             // 
             // btnDashboard
             // 
-            this.btnDashboard.BackColor = System.Drawing.Color.White;
+            this.btnDashboard.BackColor = System.Drawing.Color.Transparent;
             this.btnDashboard.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDashboard.FlatAppearance.BorderSize = 0;
             this.btnDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDashboard.Font = new System.Drawing.Font("Microsoft Tai Le", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDashboard.ForeColor = System.Drawing.Color.Black;
-            this.btnDashboard.Location = new System.Drawing.Point(-1, 137);
+            this.btnDashboard.Font = new System.Drawing.Font("Segoe UI Semibold", 13F);
+            this.btnDashboard.ForeColor = System.Drawing.Color.White;
+            this.btnDashboard.Location = new System.Drawing.Point(10, 140);
             this.btnDashboard.Name = "btnDashboard";
-            this.btnDashboard.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btnDashboard.Size = new System.Drawing.Size(240, 41);
+            this.btnDashboard.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnDashboard.Size = new System.Drawing.Size(240, 45);
             this.btnDashboard.TabIndex = 1;
-            this.btnDashboard.Text = "🪟 Dashboard";
+            this.btnDashboard.Text = "🪟  Dashboard";
             this.btnDashboard.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDashboard.UseVisualStyleBackColor = false;
             this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click);
@@ -159,14 +158,14 @@
             // panelMain
             // 
             this.panelMain.AutoScroll = true;
-            this.panelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.panelMain.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.panelMain.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.panelMain.Location = new System.Drawing.Point(246, 0);
+            this.panelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.panelMain.Cursor = System.Windows.Forms.Cursors.Default;
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(41)))), ((int)(((byte)(55)))));
+            this.panelMain.Location = new System.Drawing.Point(260, 0);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(1008, 761);
+            this.panelMain.Size = new System.Drawing.Size(1004, 761);
             this.panelMain.TabIndex = 1;
-            this.panelMain.Paint += new System.Windows.Forms.PaintEventHandler(this.panelMain_Paint);
             // 
             // DashboardForm
             // 
@@ -174,11 +173,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1264, 761);
-            this.Controls.Add(this.panelSidebar);
             this.Controls.Add(this.panelMain);
+            this.Controls.Add(this.panelSidebar);
             this.Name = "DashboardForm";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.DashboardForm_Load_1);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Job Management";
+            this.Load += new System.EventHandler(this.DashboardForm_Load);
             this.panelSidebar.ResumeLayout(false);
             this.panelSidebar.PerformLayout();
             this.ResumeLayout(false);
@@ -197,4 +197,3 @@
         private System.Windows.Forms.Button btnLogout;
     }
 }
-

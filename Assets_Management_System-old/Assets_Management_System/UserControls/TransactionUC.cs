@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -6,58 +7,59 @@ using System.Windows.Forms;
 using Assets_Management_System.Models;
 using Assets_Management_System.Services;
 
-namespace Assets_Management_System
+namespace Assets_Management_System.UserControls
 {
-    public partial class TransactionForm : Form
+    public partial class TransactionUC : UserControl
     {
         private TransactionService service = new TransactionService();
         private List<TransactionClass> allTransactions = new List<TransactionClass>();
 
-        public TransactionForm()
+        public TransactionUC()
         {
             InitializeComponent();
+            this.Load += new System.EventHandler(this.TransactionUC_Load);
+            this.txtSearch.KeyDown += new KeyEventHandler(txtSearch_KeyDown);
         }
 
-        private void TransactionForm_Load(object sender, EventArgs e)
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            // Set default date range (e.g., last 30 days)
+            if (e.KeyCode == Keys.Enter)
+            {
+                ApplyFilters();
+                e.SuppressKeyPress = true; // Prevent beep
+            }
+        }
+
+        private void TransactionUC_Load(object sender, EventArgs e)
+        {
+            lblTitle.ForeColor = Color.FromArgb(31, 41, 55); 
+
+             // First time load: Fetch everything
+            allTransactions = service.GetAll();
+
+            // Setup Defaults
             dtFrom.Value = DateTime.Today.AddDays(-30);
             dtTo.Value = DateTime.Today;
             cbType.SelectedIndex = 0; // "All"
 
-            LoadHistory();
-        }
-
-        private void LoadHistory()
-        {
-            try
-            {
-                // Fetch all data if not already fetched (or fetch every time to be safe)
-                allTransactions = service.GetAll();
-
-                ApplyFilters();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading history: " + ex.Message);
-            }
+            ApplyFilters();
         }
 
         private void ApplyFilters()
         {
-            var filtered = allTransactions.AsEnumerable();
+            var filtered = (allTransactions ?? new List<TransactionClass>()).AsEnumerable();
 
             // 1. Search (Asset Name)
             if (!string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 string kw = txtSearch.Text.ToLower();
                 filtered = filtered.Where(t => 
-                    t.AssetName.ToLower().Contains(kw) || 
-                    t.EmployeeName.ToLower().Contains(kw));
+                    (t.AssetName != null && t.AssetName.ToLower().Contains(kw)) || 
+                    (t.EmployeeName != null && t.EmployeeName.ToLower().Contains(kw)));
             }
 
             // 2. Type
-            if (cbType.SelectedIndex > 0)
+            if (cbType.SelectedIndex > 0) // 0 is All
             {
                 string selectedType = cbType.Text;
                 filtered = filtered.Where(t => t.TransactionType.Equals(selectedType, StringComparison.OrdinalIgnoreCase));
@@ -77,6 +79,25 @@ namespace Assets_Management_System
 
         private void FormatGrid()
         {
+            // ALWAYS apply theme even if empty
+            dgvTransactions.BackgroundColor = Color.White;
+            dgvTransactions.BorderStyle = BorderStyle.None;
+            dgvTransactions.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvTransactions.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvTransactions.GridColor = Color.FromArgb(239, 243, 248);
+            dgvTransactions.RowHeadersVisible = false;
+            dgvTransactions.EnableHeadersVisualStyles = false;
+            dgvTransactions.ColumnHeadersHeight = 45;
+            dgvTransactions.RowTemplate.Height = 45;
+            dgvTransactions.DefaultCellStyle.BackColor = Color.White;
+            dgvTransactions.DefaultCellStyle.ForeColor = Color.FromArgb(31, 41, 55); 
+            dgvTransactions.DefaultCellStyle.SelectionBackColor = Color.FromArgb(239, 246, 255); 
+            dgvTransactions.DefaultCellStyle.SelectionForeColor = Color.FromArgb(37, 99, 235);
+            dgvTransactions.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvTransactions.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(249, 250, 251);
+            dgvTransactions.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+            dgvTransactions.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+
             if (dgvTransactions.Columns.Count == 0) return;
 
             dgvTransactions.AutoGenerateColumns = false;
@@ -121,6 +142,8 @@ namespace Assets_Management_System
                 dgvTransactions.Columns["Note"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dgvTransactions.Columns["Note"].DisplayIndex = 4;
             }
+
+            dgvTransactions.ReadOnly = true;
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
@@ -135,7 +158,8 @@ namespace Assets_Management_System
             dtFrom.Value = DateTime.Today.AddDays(-30);
             dtTo.Value = DateTime.Today;
             
-            LoadHistory(); // Re-fetch to be sure
+            // Re-apply without calling Load again, just filter defaults
+            ApplyFilters();
         }
     }
 }

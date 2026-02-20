@@ -1,100 +1,102 @@
-﻿using Assets_Management_System;  // ← CORRECT
-using Assets_Management_System.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Assets_Management_System.UserControls;
 
 namespace Assets_Management_System
 {
     public partial class DashboardForm : Form
     {
-        private BindingList<Asset> assets = new BindingList<Asset>();
-
         public DashboardForm()
         {
             InitializeComponent();
         }
-        private void StyleButton(Button btn)
-        {
-            btn.FlatStyle = FlatStyle.Flat;
-            btn.FlatAppearance.BorderSize = 0;
-            btn.BackColor = Color.White;
 
-            btn.MouseEnter += (s, e) =>
-                btn.BackColor = Color.FromArgb(235, 239, 244);
-
-            btn.MouseLeave += (s, e) =>
-                btn.BackColor = Color.White;
-        }
-
-        private void LoadForm(Form f)
-        {
-            panelMain.Controls.Clear();
-
-            f.TopLevel = false;
-            f.FormBorderStyle = FormBorderStyle.None;
-            f.Dock = DockStyle.Fill;
-
-            panelMain.Controls.Add(f);
-            f.Show();
-        }
         private void DashboardForm_Load(object sender, EventArgs e)
         {
-            StyleButton(btnDashboard);
-            StyleButton(btnAssets);
-            StyleButton(btnStockTransaction);
-            StyleButton(btnReport);
-            StyleButton(btnLogout);
-            LoadForm(new ReportForm()); // or AssetsForm or HomeForm
-        }
-        private void ActivateButton(Button active)
-        {
-            foreach (Control c in panelSidebar.Controls)
-                if (c is Button b)
-                    b.BackColor = Color.White; // reset
+            // Seed Data if empty
+            var seeder = new Services.DataSeeder();
+            seeder.Seed();
 
-            active.BackColor = Color.FromArgb(235, 239, 244); // light gray highlight
+            // Default View
+            SetActiveButton(btnDashboard);
+            AddUserControl(new DashboardUC());
         }
+
+        private void AddUserControl(UserControl uc)
+        {
+            uc.Dock = DockStyle.Fill;
+            panelMain.Controls.Clear();
+            panelMain.Controls.Add(uc);
+            uc.BringToFront();
+        }
+
+        // Navigation Handlers
+        private void SetActiveButton(Button activeBtn)
+        {
+            foreach (Control ctrl in panelSidebar.Controls)
+            {
+                if (ctrl is Button btn && btn != btnLogout)
+                {
+                    btn.ForeColor = Color.FromArgb(148, 163, 184); // Dimmed slate
+                    btn.BackColor = Color.Transparent;
+                }
+            }
+
+            if (activeBtn != null && activeBtn != btnLogout)
+            {
+                activeBtn.ForeColor = Color.White;
+                activeBtn.BackColor = Color.FromArgb(30, 41, 59); // Slightly lighter navy/slate
+            }
+        }
+
         private void btnDashboard_Click(object sender, EventArgs e)
         {
-            ActivateButton(btnDashboard);
-            panelMain.Controls.Clear();
+            SetActiveButton(btnDashboard);
+            AddUserControl(new DashboardUC());
         }
 
         private void btnAssets_Click(object sender, EventArgs e)
         {
-            ActivateButton(btnAssets);
-            LoadForm(new AssetsForm());
+            SetActiveButton(btnAssets);
+            AddUserControl(new AssetsUC());
         }
 
         private void btnStockTransaction_Click(object sender, EventArgs e)
         {
-            ActivateButton(btnStockTransaction);
+            SetActiveButton(btnStockTransaction);
+            AddUserControl(new TransactionUC());
         }
 
         private void btnReport_Click(object sender, EventArgs e)
         {
-            ActivateButton(btnReport);
-            LoadForm(new ReportForm());
+            SetActiveButton(btnReport);
+            AddUserControl(new ReportUC());
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            ActivateButton(btnLogout);
-            LoginForm login = new LoginForm();
-            login.Show();
-            this.Close();
-        }
+            Form login = null;
+            foreach (Form f in Application.OpenForms)
+            {
+                if (f is LoginForm)
+                {
+                    login = f;
+                    break;
+                }
+            }
 
-        private void panelMain_Paint(object sender, PaintEventArgs e)
-        {
-
+            if (login != null)
+            {
+                login.Show();
+                this.Close();
+            }
+            else
+            {
+                LoginForm newLogin = new LoginForm();
+                newLogin.Show();
+                this.Close();
+            }
         }
 
         private void panelSidebar_Paint(object sender, PaintEventArgs e)
@@ -102,7 +104,7 @@ namespace Assets_Management_System
 
         }
 
-        private void DashboardForm_Load_1(object sender, EventArgs e)
+        private void panelMain_Paint(object sender, PaintEventArgs e)
         {
 
         }

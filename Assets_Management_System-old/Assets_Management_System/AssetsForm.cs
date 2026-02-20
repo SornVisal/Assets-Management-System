@@ -27,27 +27,34 @@ namespace Assets_Management_System
 
         private void AssetsForm_Load(object sender, EventArgs e)
         {
-            if (service.GetAll().Count == 0)
+            try
             {
-                service.Add(new Asset
+                if (service.GetAll().Count == 0)
                 {
-                    Name = "Laptop Dell XPS",
-                    Category = "Laptop",
-                    SerialNumber = "SN001",
-                    PurchaseDate = DateTime.Today,
-                    Price = 1299.99m,
-                    Status = "Available"
-                });
+                    service.Add(new Asset
+                    {
+                        Name = "Laptop Dell XPS",
+                        Category = "Laptop",
+                        SerialNumber = "SN001",
+                        PurchaseDate = DateTime.Today,
+                        Price = 1299.99m,
+                        Status = "Available"
+                    });
 
-                service.Add(new Asset
-                {
-                    Name = "Office Chair",
-                    Category = "Furniture",
-                    SerialNumber = "SN002",
-                    PurchaseDate = DateTime.Today,
-                    Price = 189.50m,
-                    Status = "Available"
-                });
+                    service.Add(new Asset
+                    {
+                        Name = "Office Chair",
+                        Category = "Furniture",
+                        SerialNumber = "SN002",
+                        PurchaseDate = DateTime.Today,
+                        Price = 189.50m,
+                        Status = "Available"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                 MessageBox.Show("Error initializing data: " + ex.Message);
             }
 
             newAssetsPanel = new NewAssetsPanel();
@@ -61,14 +68,14 @@ namespace Assets_Management_System
         {
             try
             {
+                // VERY IMPORTANT - Set this BEFORE DataSource
+                dgvAssets.AutoGenerateColumns = false;
+
                 bindingSource.DataSource = service.GetAll();
                 dgvAssets.DataSource = bindingSource;
-
-                // VERY IMPORTANT
-                dgvAssets.AutoGenerateColumns = false;
+                
                 dgvAssets.Columns.Clear();
 
-                // 👇👇👇 THIS IS WHERE YOUR CODE GOES 👇👇👇
                 dgvAssets.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     DataPropertyName = "AssetCode",
@@ -129,7 +136,7 @@ namespace Assets_Management_System
                     Width = 90
                 });
 
-                // grid behavior (you already had this part)
+                // grid behavior
                 dgvAssets.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvAssets.MultiSelect = false;
                 dgvAssets.ReadOnly = true;
@@ -137,7 +144,7 @@ namespace Assets_Management_System
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error loading grid: " + ex.Message);
             }
         }
 

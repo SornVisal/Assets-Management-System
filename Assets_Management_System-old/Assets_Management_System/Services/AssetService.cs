@@ -1,56 +1,55 @@
 ﻿using Assets_Management_System.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Npgsql;
 
 namespace Assets_Management_System.Services
 {
     public class AssetService
     {
-        private readonly string connectionString =
-            @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=AssetDB;Integrated Security=True";
-
+        // Connection string is managed by DbHelper
+        
         // ================= ADD =================
         public void Add(Asset asset)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (var conn = DbHelper.GetConnection())
             {
-                conn.Open();
+                // conn.Open(); // Connection is already open from DbHelper
 
-                // 1️⃣ Insert asset and get new ID
+                // 1. Insert asset and get new ID (Postgres syntax)
+                // Using unquoted identifiers allows Postgres to match regardless of casing (defaults to lowercase)
                 string insertSql = @"
 INSERT INTO Assets
 (Name, Category, SerialNumber, PurchaseDate, Price, Status, ImagePath, Notes)
-OUTPUT INSERTED.Id
 VALUES
-(@Name, @Category, @SerialNumber, @PurchaseDate, @Price, @Status, @ImagePath, @Notes);
-";
+(@Name, @Category, @SerialNumber, @PurchaseDate, @Price, @Status, @ImagePath, @Notes)
+RETURNING Id";
 
                 int newId;
-                using (SqlCommand cmd = new SqlCommand(insertSql, conn))
+                using (var cmd = new NpgsqlCommand(insertSql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Name", asset.Name);
-                    cmd.Parameters.AddWithValue("@Category", asset.Category);
-                    cmd.Parameters.AddWithValue("@SerialNumber", asset.SerialNumber ?? "");
-                    cmd.Parameters.AddWithValue("@PurchaseDate", asset.PurchaseDate);
-                    cmd.Parameters.AddWithValue("@Price", asset.Price);
-                    cmd.Parameters.AddWithValue("@Status", asset.Status);
-                    cmd.Parameters.AddWithValue("@ImagePath", asset.ImagePath ?? "");
-                    cmd.Parameters.AddWithValue("@Notes", asset.Notes ?? "");
+                    cmd.Parameters.AddWithValue("Name", asset.Name);
+                    cmd.Parameters.AddWithValue("Category", asset.Category);
+                    cmd.Parameters.AddWithValue("SerialNumber", asset.SerialNumber ?? "");
+                    cmd.Parameters.AddWithValue("PurchaseDate", asset.PurchaseDate);
+                    cmd.Parameters.AddWithValue("Price", asset.Price);
+                    cmd.Parameters.AddWithValue("Status", asset.Status);
+                    cmd.Parameters.AddWithValue("ImagePath", asset.ImagePath ?? "");
+                    cmd.Parameters.AddWithValue("Notes", asset.Notes ?? "");
 
-                    newId = (int)cmd.ExecuteScalar();
+                    newId = Convert.ToInt32(cmd.ExecuteScalar());
                 }
 
-                // 2️⃣ Generate AssetCode
+                // 2. Generate AssetCode
                 string assetCode = $"AST-{newId:0000}";
 
-                // 3️⃣ Update AssetCode
+                // 3. Update AssetCode
                 string updateSql = "UPDATE Assets SET AssetCode=@Code WHERE Id=@Id";
 
-                using (SqlCommand cmd = new SqlCommand(updateSql, conn))
+                using (var cmd = new NpgsqlCommand(updateSql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Code", assetCode);
-                    cmd.Parameters.AddWithValue("@Id", newId);
+                    cmd.Parameters.AddWithValue("Code", assetCode);
+                    cmd.Parameters.AddWithValue("Id", newId);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -60,9 +59,9 @@ VALUES
         // ================= UPDATE =================
         public void Update(Asset asset)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (var conn = DbHelper.GetConnection())
             {
-                conn.Open();
+                // conn.Open();
 
                 string sql = @"
 UPDATE Assets SET
@@ -76,16 +75,16 @@ Notes=@Notes
 WHERE Id=@Id;
 ";
 
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (var cmd = new NpgsqlCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", asset.Id);
-                    cmd.Parameters.AddWithValue("@Name", asset.Name);
-                    cmd.Parameters.AddWithValue("@Category", asset.Category);
-                    cmd.Parameters.AddWithValue("@SerialNumber", asset.SerialNumber ?? "");
-                    cmd.Parameters.AddWithValue("@PurchaseDate", asset.PurchaseDate);
-                    cmd.Parameters.AddWithValue("@Price", asset.Price);
-                    cmd.Parameters.AddWithValue("@ImagePath", asset.ImagePath ?? "");
-                    cmd.Parameters.AddWithValue("@Notes", asset.Notes ?? "");
+                    cmd.Parameters.AddWithValue("Id", asset.Id);
+                    cmd.Parameters.AddWithValue("Name", asset.Name);
+                    cmd.Parameters.AddWithValue("Category", asset.Category);
+                    cmd.Parameters.AddWithValue("SerialNumber", asset.SerialNumber ?? "");
+                    cmd.Parameters.AddWithValue("PurchaseDate", asset.PurchaseDate);
+                    cmd.Parameters.AddWithValue("Price", asset.Price);
+                    cmd.Parameters.AddWithValue("ImagePath", asset.ImagePath ?? "");
+                    cmd.Parameters.AddWithValue("Notes", asset.Notes ?? "");
 
                     cmd.ExecuteNonQuery();
                 }
@@ -95,15 +94,15 @@ WHERE Id=@Id;
         // ================= DELETE =================
         public void Delete(int id)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (var conn = DbHelper.GetConnection())
             {
-                conn.Open();
+                // conn.Open();
 
                 string sql = "DELETE FROM Assets WHERE Id=@Id";
 
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (var cmd = new NpgsqlCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("Id", id);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -114,26 +113,26 @@ WHERE Id=@Id;
         {
             List<Asset> list = new List<Asset>();
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (var conn = DbHelper.GetConnection())
             {
-                conn.Open();
+                // conn.Open();
 
                 string sql = "SELECT * FROM Assets ORDER BY Id DESC";
 
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                using (SqlDataReader r = cmd.ExecuteReader())
+                using (var cmd = new NpgsqlCommand(sql, conn))
+                using (var r = cmd.ExecuteReader())
                 {
                     while (r.Read())
                     {
                         list.Add(new Asset
                         {
-                            Id = (int)r["Id"],
+                            Id = Convert.ToInt32(r["Id"]),
                             AssetCode = r["AssetCode"] as string,
                             Name = r["Name"].ToString(),
                             Category = r["Category"].ToString(),
                             SerialNumber = r["SerialNumber"].ToString(),
-                            PurchaseDate = (DateTime)r["PurchaseDate"],
-                            Price = (decimal)r["Price"],
+                            PurchaseDate = Convert.ToDateTime(r["PurchaseDate"]),
+                            Price = Convert.ToDecimal(r["Price"]),
                             Status = r["Status"].ToString(),
                             ImagePath = r["ImagePath"].ToString(),
                             Notes = r["Notes"].ToString()
@@ -146,19 +145,22 @@ WHERE Id=@Id;
         }
         public void AssignAsset(int assetId)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            UpdateStatus(assetId, "Assigned");
+        }
+
+        public void UpdateStatus(int assetId, string status)
+        {
+            using (var conn = DbHelper.GetConnection())
             {
-                conn.Open();
-
-                string sql = "UPDATE Assets SET Status='Assigned' WHERE Id=@Id";
-
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                string sql = "UPDATE Assets SET Status=@Status WHERE Id=@Id";
+                using (var cmd = new NpgsqlCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", assetId);
+                    cmd.Parameters.AddWithValue("Status", status);
+                    cmd.Parameters.AddWithValue("Id", assetId);
                     cmd.ExecuteNonQuery();
                 }
             }
         }
-
     }
 }
+

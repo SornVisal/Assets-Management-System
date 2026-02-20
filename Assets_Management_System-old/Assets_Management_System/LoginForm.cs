@@ -1,5 +1,7 @@
 ﻿using System;
-using System.Data.SqlClient;
+using Npgsql;
+using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Assets_Management_System.Services;
 
@@ -11,9 +13,22 @@ namespace Assets_Management_System
         {
             InitializeComponent();
             this.AcceptButton = btnLogin;
+            this.VisibleChanged += new EventHandler(LoginForm_VisibleChanged);
+            lblMessage.Text = ""; // Clear on start
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void LoginForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (this.Visible)
+            {
+                txtUser.Clear();
+                txtPass.Clear();
+                lblMessage.Text = "";
+                btnLogin.Enabled = true;
+            }
+        }
+
+        private async void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtUser.Text.Trim();
             string password = txtPass.Text.Trim();
@@ -21,29 +36,42 @@ namespace Assets_Management_System
             // basic validation
             if (username == "" || password == "")
             {
-                MessageBox.Show("Please enter username and password");
+                lblMessage.ForeColor = Color.FromArgb(239, 68, 68);
+                lblMessage.Text = "Please enter both username and password.";
                 return;
             }
 
+            lblMessage.ForeColor = Color.FromArgb(37, 99, 235);
+            lblMessage.Text = "Authenticating...";
+            btnLogin.Enabled = false; // Prevent double click
+
             try
             {
-                using (SqlConnection con = DbHelper.GetConnection())
+                using (var con = DbHelper.GetConnection())
                 {
-                    con.Open();
+                    // con.Open(); // DbHelper already opens the connection
 
+                    // Postgres table/column names are case-insensitive by default if unquoted
+                    // We assume tables are created as 'users' (or 'Users' which casts to 'users')
+                    // 'user' is a reserved keyword, but 'users' is not.
                     string sql =
                         "SELECT COUNT(*) FROM Users WHERE Username=@u AND Password=@p";
 
-                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    using (var cmd = new NpgsqlCommand(sql, con))
                     {
-                        cmd.Parameters.AddWithValue("@u", username);
-                        cmd.Parameters.AddWithValue("@p", password);
+                        cmd.Parameters.AddWithValue("u", username);
+                        cmd.Parameters.AddWithValue("p", password);
 
-                        int count = (int)cmd.ExecuteScalar();
+                        // Use long because COUNT returns bigint in Postgres
+                        long count = (long)cmd.ExecuteScalar(); 
 
                         if (count > 0)
                         {
-                            MessageBox.Show("Welcome, " + username);
+                            lblMessage.ForeColor = Color.FromArgb(16, 185, 129); // Success Green
+                            lblMessage.Text = "Login successful! Redirecting...";
+
+                            // Small delay so user can see the message
+                            await Task.Delay(800);
 
                             DashboardForm dash = new DashboardForm();
                             dash.Show();
@@ -52,16 +80,21 @@ namespace Assets_Management_System
                         }
                         else
                         {
-                            MessageBox.Show("Invalid username or password");
+                            lblMessage.ForeColor = Color.FromArgb(239, 68, 68); // Error Red
+                            lblMessage.Text = "Invalid username or password.";
                             txtPass.Clear();
                             txtUser.Focus();
+                            btnLogin.Enabled = true;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Database error:\n" + ex.Message);
+                lblMessage.ForeColor = Color.FromArgb(239, 68, 68);
+                lblMessage.Text = "Database connection error.";
+                btnLogin.Enabled = true;
+                // Optional: Console.WriteLine(ex.Message);
             }
         }
     }
