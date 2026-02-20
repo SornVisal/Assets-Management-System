@@ -73,7 +73,7 @@ namespace Assets_Management_System
                             // Small delay so user can see the message
                             await Task.Delay(800);
 
-                            DashboardForm dash = new DashboardForm();
+                            MainForm dash = new MainForm();
                             dash.Show();
 
                             this.Hide();

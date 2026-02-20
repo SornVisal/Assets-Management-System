@@ -5,14 +5,14 @@ using Assets_Management_System.UserControls;
 
 namespace Assets_Management_System
 {
-    public partial class DashboardForm : Form
+    public partial class MainForm : Form
     {
-        public DashboardForm()
+        public MainForm()
         {
             InitializeComponent();
         }
 
-        private void DashboardForm_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
             // Seed Data if empty
             var seeder = new Services.DataSeeder();

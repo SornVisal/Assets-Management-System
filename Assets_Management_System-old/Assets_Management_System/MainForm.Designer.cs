@@ -1,6 +1,6 @@
 ﻿namespace Assets_Management_System
 {
-    partial class DashboardForm
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -175,10 +175,10 @@
             this.ClientSize = new System.Drawing.Size(1264, 761);
             this.Controls.Add(this.panelMain);
             this.Controls.Add(this.panelSidebar);
-            this.Name = "DashboardForm";
+            this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Job Management";
-            this.Load += new System.EventHandler(this.DashboardForm_Load);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.panelSidebar.ResumeLayout(false);
             this.panelSidebar.PerformLayout();
             this.ResumeLayout(false);
