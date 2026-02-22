@@ -127,10 +127,24 @@ namespace Assets_Management_System.UserControls
                 return;
             }
 
-            if (!decimal.TryParse(txtPrice.Text, out decimal price))
+            if (!decimal.TryParse(txtPrice.Text, out decimal price) || price < 0)
             {
                 lblMessage.ForeColor = Color.FromArgb(239, 68, 68);
-                lblMessage.Text = "Please enter a valid price.";
+                lblMessage.Text = "Please enter a valid positive price.";
+                return;
+            }
+
+            if (price == 0)
+            {
+                lblMessage.ForeColor = Color.FromArgb(239, 68, 68);
+                lblMessage.Text = "Price cannot be zero.";
+                return;
+            }
+
+            if (dtPurchase.Value > DateTime.Now)
+            {
+                lblMessage.ForeColor = Color.FromArgb(239, 68, 68);
+                lblMessage.Text = "Purchase date cannot be in the future.";
                 return;
             }
 

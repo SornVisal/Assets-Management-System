@@ -25,6 +25,8 @@ namespace Assets_Management_System.UserControls
             lblValueLabel.ForeColor = Color.FromArgb(107, 114, 128);
             lblAssignedLabel.ForeColor = Color.FromArgb(107, 114, 128);
             lblAvailableLabel.ForeColor = Color.FromArgb(107, 114, 128);
+            lblRepairLabel.ForeColor = Color.FromArgb(107, 114, 128);
+            lblRetireLabel.ForeColor = Color.FromArgb(107, 114, 128);
 
             LoadStats();
             LoadRecentTransactions();
@@ -50,6 +52,14 @@ namespace Assets_Management_System.UserControls
                 // 4. Available
                 int available = assets.Count(a => a.Status == AssetStatus.Available);
                 lblAvailableCount.Text = available.ToString();
+
+                // 5. In Repair
+                int inRepair = assets.Count(a => a.Status == AssetStatus.Repair);
+                lblRepairCount.Text = inRepair.ToString();
+
+                // 6. Retired
+                int retired = assets.Count(a => a.Status == AssetStatus.Retired);
+                lblRetireCount.Text = retired.ToString();
             }
             catch (Exception ex)
             {

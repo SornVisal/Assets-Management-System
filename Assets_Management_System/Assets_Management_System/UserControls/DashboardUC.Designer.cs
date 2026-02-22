@@ -34,6 +34,12 @@ namespace Assets_Management_System.UserControls
             this.cardAvailable = new System.Windows.Forms.Panel();
             this.lblAvailableCount = new System.Windows.Forms.Label();
             this.lblAvailableLabel = new System.Windows.Forms.Label();
+            this.cardRepair = new System.Windows.Forms.Panel();
+            this.lblRepairCount = new System.Windows.Forms.Label();
+            this.lblRepairLabel = new System.Windows.Forms.Label();
+            this.cardRetire = new System.Windows.Forms.Panel();
+            this.lblRetireCount = new System.Windows.Forms.Label();
+            this.lblRetireLabel = new System.Windows.Forms.Label();
             this.panelRecent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecent)).BeginInit();
             this.panelCards.SuspendLayout();
@@ -41,6 +47,8 @@ namespace Assets_Management_System.UserControls
             this.cardValue.SuspendLayout();
             this.cardAssigned.SuspendLayout();
             this.cardAvailable.SuspendLayout();
+            this.cardRepair.SuspendLayout();
+            this.cardRetire.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelRecent
@@ -109,11 +117,15 @@ namespace Assets_Management_System.UserControls
             // 
             // panelCards
             // 
-            this.panelCards.ColumnCount = 4;
-            this.panelCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.panelCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.panelCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.panelCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.panelCards.ColumnCount = 6;
+            this.panelCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.panelCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.panelCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.panelCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.panelCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.panelCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.panelCards.Controls.Add(this.cardRetire, 5, 0);
+            this.panelCards.Controls.Add(this.cardRepair, 4, 0);
             this.panelCards.Controls.Add(this.cardAvailable, 3, 0);
             this.panelCards.Controls.Add(this.cardAssigned, 2, 0);
             this.panelCards.Controls.Add(this.cardValue, 1, 0);
@@ -262,6 +274,74 @@ namespace Assets_Management_System.UserControls
             this.lblAvailableLabel.TabIndex = 0;
             this.lblAvailableLabel.Text = "Available";
             // 
+            // cardRepair
+            // 
+            this.cardRepair.BackColor = System.Drawing.Color.White;
+            this.cardRepair.Controls.Add(this.lblRepairCount);
+            this.cardRepair.Controls.Add(this.lblRepairLabel);
+            this.cardRepair.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cardRepair.Location = new System.Drawing.Point(485, 3);
+            this.cardRepair.Margin = new System.Windows.Forms.Padding(3, 3, 10, 10);
+            this.cardRepair.Name = "cardRepair";
+            this.cardRepair.Size = new System.Drawing.Size(124, 137);
+            this.cardRepair.TabIndex = 4;
+            // 
+            // lblRepairCount
+            // 
+            this.lblRepairCount.AutoSize = true;
+            this.lblRepairCount.Font = new System.Drawing.Font("Microsoft Tai Le", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRepairCount.ForeColor = System.Drawing.Color.DarkViolet;
+            this.lblRepairCount.Location = new System.Drawing.Point(15, 50);
+            this.lblRepairCount.Name = "lblRepairCount";
+            this.lblRepairCount.Size = new System.Drawing.Size(37, 41);
+            this.lblRepairCount.TabIndex = 1;
+            this.lblRepairCount.Text = "0";
+            // 
+            // lblRepairLabel
+            // 
+            this.lblRepairLabel.AutoSize = true;
+            this.lblRepairLabel.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRepairLabel.ForeColor = System.Drawing.Color.Gray;
+            this.lblRepairLabel.Location = new System.Drawing.Point(15, 15);
+            this.lblRepairLabel.Name = "lblRepairLabel";
+            this.lblRepairLabel.Size = new System.Drawing.Size(58, 20);
+            this.lblRepairLabel.TabIndex = 0;
+            this.lblRepairLabel.Text = "In Repair";
+            // 
+            // cardRetire
+            // 
+            this.cardRetire.BackColor = System.Drawing.Color.White;
+            this.cardRetire.Controls.Add(this.lblRetireCount);
+            this.cardRetire.Controls.Add(this.lblRetireLabel);
+            this.cardRetire.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cardRetire.Location = new System.Drawing.Point(726, 3);
+            this.cardRetire.Margin = new System.Windows.Forms.Padding(3, 3, 10, 10);
+            this.cardRetire.Name = "cardRetire";
+            this.cardRetire.Size = new System.Drawing.Size(124, 137);
+            this.cardRetire.TabIndex = 5;
+            // 
+            // lblRetireCount
+            // 
+            this.lblRetireCount.AutoSize = true;
+            this.lblRetireCount.Font = new System.Drawing.Font("Microsoft Tai Le", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRetireCount.ForeColor = System.Drawing.Color.Crimson;
+            this.lblRetireCount.Location = new System.Drawing.Point(15, 50);
+            this.lblRetireCount.Name = "lblRetireCount";
+            this.lblRetireCount.Size = new System.Drawing.Size(37, 41);
+            this.lblRetireCount.TabIndex = 1;
+            this.lblRetireCount.Text = "0";
+            // 
+            // lblRetireLabel
+            // 
+            this.lblRetireLabel.AutoSize = true;
+            this.lblRetireLabel.Font = new System.Drawing.Font("Microsoft Tai Le", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRetireLabel.ForeColor = System.Drawing.Color.Gray;
+            this.lblRetireLabel.Location = new System.Drawing.Point(15, 15);
+            this.lblRetireLabel.Name = "lblRetireLabel";
+            this.lblRetireLabel.Size = new System.Drawing.Size(57, 20);
+            this.lblRetireLabel.TabIndex = 0;
+            this.lblRetireLabel.Text = "Retired";
+            // 
             // DashboardUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,6 +363,10 @@ namespace Assets_Management_System.UserControls
             this.cardAssigned.PerformLayout();
             this.cardAvailable.ResumeLayout(false);
             this.cardAvailable.PerformLayout();
+            this.cardRepair.ResumeLayout(false);
+            this.cardRepair.PerformLayout();
+            this.cardRetire.ResumeLayout(false);
+            this.cardRetire.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -305,5 +389,11 @@ namespace Assets_Management_System.UserControls
         private System.Windows.Forms.Panel cardAvailable;
         private System.Windows.Forms.Label lblAvailableCount;
         private System.Windows.Forms.Label lblAvailableLabel;
+        private System.Windows.Forms.Panel cardRepair;
+        private System.Windows.Forms.Label lblRepairCount;
+        private System.Windows.Forms.Label lblRepairLabel;
+        private System.Windows.Forms.Panel cardRetire;
+        private System.Windows.Forms.Label lblRetireCount;
+        private System.Windows.Forms.Label lblRetireLabel;
     }
 }

@@ -49,43 +49,55 @@ namespace Assets_Management_System
             {
                 using (var con = DbHelper.GetConnection())
                 {
-                    // con.Open(); // DbHelper already opens the connection
-
-                    // Postgres table/column names are case-insensitive by default if unquoted
-                    // We assume tables are created as 'users' (or 'Users' which casts to 'users')
-                    // 'user' is a reserved keyword, but 'users' is not.
-                    string sql =
-                        "SELECT COUNT(*) FROM Users WHERE Username=@u AND Password=@p";
+                    // Get password from database
+                    string sql = "SELECT Password FROM Users WHERE Username=@u LIMIT 1";
+                    string storedPassword = null;
 
                     using (var cmd = new NpgsqlCommand(sql, con))
                     {
                         cmd.Parameters.AddWithValue("u", username);
-                        cmd.Parameters.AddWithValue("p", password);
+                        var result = cmd.ExecuteScalar();
+                        storedPassword = result?.ToString();
+                    }
 
-                        // Use long because COUNT returns bigint in Postgres
-                        long count = (long)cmd.ExecuteScalar(); 
-
-                        if (count > 0)
+                    // Check password - support both hashed (new) and plain text (legacy)
+                    bool isValidPassword = false;
+                    
+                    if (!string.IsNullOrEmpty(storedPassword))
+                    {
+                        // Try hashed password first (new method)
+                        if (PasswordHelper.VerifyPassword(password, storedPassword))
                         {
-                            lblMessage.ForeColor = Color.FromArgb(16, 185, 129); // Success Green
-                            lblMessage.Text = "Login successful! Redirecting...";
-
-                            // Small delay so user can see the message
-                            await Task.Delay(800);
-
-                            MainForm dash = new MainForm();
-                            dash.Show();
-
-                            this.Hide();
+                            isValidPassword = true;
                         }
-                        else
+                        // Fall back to plain text (legacy - for existing users)
+                        else if (storedPassword == password)
                         {
-                            lblMessage.ForeColor = Color.FromArgb(239, 68, 68); // Error Red
-                            lblMessage.Text = "Invalid username or password.";
-                            txtPass.Clear();
-                            txtUser.Focus();
-                            btnLogin.Enabled = true;
+                            isValidPassword = true;
+                            // TODO: Prompt user to change password to secure hash
                         }
+                    }
+
+                    if (isValidPassword)
+                    {
+                        lblMessage.ForeColor = Color.FromArgb(16, 185, 129); // Success Green
+                        lblMessage.Text = "Login successful! Redirecting...";
+
+                        // Small delay so user can see the message
+                        await Task.Delay(800);
+
+                        MainForm dash = new MainForm();
+                        dash.Show();
+
+                        this.Hide();
+                    }
+                    else
+                    {
+                        lblMessage.ForeColor = Color.FromArgb(239, 68, 68); // Error Red
+                        lblMessage.Text = "Invalid username or password.";
+                        txtPass.Clear();
+                        txtUser.Focus();
+                        btnLogin.Enabled = true;
                     }
                 }
             }

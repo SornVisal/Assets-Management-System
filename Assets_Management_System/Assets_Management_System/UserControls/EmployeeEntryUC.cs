@@ -51,7 +51,12 @@ namespace Assets_Management_System.UserControls
                 lblMessage.Text = "Full Name is required.";
                 return;
             }
-
+            if (string.IsNullOrWhiteSpace(txtEmail.Text) || !txtEmail.Text.Contains("@"))
+            {
+                lblMessage.ForeColor = Color.FromArgb(239, 68, 68);
+                lblMessage.Text = "Valid email address is required.";
+                return;
+            }
             var emp = currentEmployee ?? new Employee();
             emp.FullName = txtFullName.Text.Trim();
             emp.Department = txtDepartment.Text.Trim();

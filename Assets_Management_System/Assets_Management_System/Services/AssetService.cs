@@ -113,32 +113,40 @@ WHERE Id=@Id;
         {
             List<Asset> list = new List<Asset>();
 
-            using (var conn = DbHelper.GetConnection())
+            try
             {
-                // conn.Open();
-
-                string sql = "SELECT * FROM Assets ORDER BY Id DESC";
-
-                using (var cmd = new NpgsqlCommand(sql, conn))
-                using (var r = cmd.ExecuteReader())
+                using (var conn = DbHelper.GetConnection())
                 {
-                    while (r.Read())
+                    string sql = "SELECT * FROM Assets ORDER BY Id DESC";
+
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    using (var r = cmd.ExecuteReader())
                     {
-                        list.Add(new Asset
+                        while (r.Read())
                         {
-                            Id = Convert.ToInt32(r["Id"]),
-                            AssetCode = r["AssetCode"] as string,
-                            Name = r["Name"].ToString(),
-                            Category = r["Category"].ToString(),
-                            SerialNumber = r["SerialNumber"].ToString(),
-                            PurchaseDate = Convert.ToDateTime(r["PurchaseDate"]),
-                            Price = Convert.ToDecimal(r["Price"]),
-                            Status = r["Status"].ToString(),
-                            ImagePath = r["ImagePath"].ToString(),
-                            Notes = r["Notes"].ToString()
-                        });
+                            list.Add(new Asset
+                            {
+                                Id = Convert.ToInt32(r["Id"]),
+                                AssetCode = r["AssetCode"] as string,
+                                Name = r["Name"].ToString(),
+                                Category = r["Category"].ToString(),
+                                SerialNumber = r["SerialNumber"].ToString(),
+                                PurchaseDate = Convert.ToDateTime(r["PurchaseDate"]),
+                                Price = Convert.ToDecimal(r["Price"]),
+                                Status = r["Status"].ToString(),
+                                ImagePath = r["ImagePath"].ToString(),
+                                Notes = r["Notes"].ToString()
+                            });
+                        }
                     }
+                    
+                    System.Diagnostics.Debug.WriteLine($"GetAll() returned {list.Count} assets");
                 }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"AssetService.GetAll() Error: {ex.Message}\n{ex.StackTrace}");
+                throw;
             }
 
             return list;

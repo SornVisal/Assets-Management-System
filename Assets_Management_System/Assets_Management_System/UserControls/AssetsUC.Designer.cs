@@ -18,12 +18,13 @@ namespace Assets_Management_System.UserControls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelTop = new System.Windows.Forms.Panel();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
             this.txtAssetName = new System.Windows.Forms.TextBox();
+            this.lblSearchStatus = new System.Windows.Forms.Label();
             this.lblSubtitle = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
             this.pnlContent = new System.Windows.Forms.Panel();
@@ -49,6 +50,7 @@ namespace Assets_Management_System.UserControls
             this.panelTop.Controls.Add(this.btnEdit);
             this.panelTop.Controls.Add(this.btnNew);
             this.panelTop.Controls.Add(this.txtAssetName);
+            this.panelTop.Controls.Add(this.lblSearchStatus);
             this.panelTop.Controls.Add(this.lblSubtitle);
             this.panelTop.Controls.Add(this.lblTitle);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -62,7 +64,6 @@ namespace Assets_Management_System.UserControls
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDelete.BackColor = System.Drawing.Color.White;
             this.btnDelete.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(68)))), ((int)(((byte)(68)))));
-            this.btnDelete.FlatAppearance.BorderSize = 1;
             this.btnDelete.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.btnDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -82,7 +83,6 @@ namespace Assets_Management_System.UserControls
             this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnEdit.BackColor = System.Drawing.Color.White;
             this.btnEdit.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
-            this.btnEdit.FlatAppearance.BorderSize = 1;
             this.btnEdit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(245)))), ((int)(((byte)(249)))));
             this.btnEdit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(232)))), ((int)(((byte)(240)))));
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -103,7 +103,6 @@ namespace Assets_Management_System.UserControls
             this.btnNew.BackColor = System.Drawing.Color.White;
             this.btnNew.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnNew.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(99)))), ((int)(((byte)(235)))));
-            this.btnNew.FlatAppearance.BorderSize = 1;
             this.btnNew.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
             this.btnNew.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(234)))), ((int)(((byte)(254)))));
             this.btnNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -123,12 +122,24 @@ namespace Assets_Management_System.UserControls
             this.txtAssetName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAssetName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtAssetName.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.txtAssetName.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.txtAssetName.Location = new System.Drawing.Point(720, 35);
             this.txtAssetName.Margin = new System.Windows.Forms.Padding(2);
             this.txtAssetName.Name = "txtAssetName";
             this.txtAssetName.Size = new System.Drawing.Size(220, 27);
             this.txtAssetName.TabIndex = 18;
             this.txtAssetName.TextChanged += new System.EventHandler(this.txtAssetName_TextChanged);
+            // 
+            // lblSearchStatus
+            // 
+            this.lblSearchStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSearchStatus.AutoSize = true;
+            this.lblSearchStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSearchStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
+            this.lblSearchStatus.Location = new System.Drawing.Point(720, 64);
+            this.lblSearchStatus.Name = "lblSearchStatus";
+            this.lblSearchStatus.Size = new System.Drawing.Size(0, 15);
+            this.lblSearchStatus.TabIndex = 19;
             // 
             // lblSubtitle
             // 
@@ -171,14 +182,14 @@ namespace Assets_Management_System.UserControls
             this.dgvAssets.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAssets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAssets.ContextMenuStrip = this.cmsAsset;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Tai Le", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(245)))), ((int)(((byte)(249)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAssets.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Tai Le", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(245)))), ((int)(((byte)(249)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAssets.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvAssets.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAssets.GridColor = System.Drawing.Color.WhiteSmoke;
             this.dgvAssets.Location = new System.Drawing.Point(20, 20);
@@ -201,53 +212,53 @@ namespace Assets_Management_System.UserControls
             this.tsmEdit,
             this.tsmDelete});
             this.cmsAsset.Name = "cmsAsset";
-            this.cmsAsset.Size = new System.Drawing.Size(126, 142);
+            this.cmsAsset.Size = new System.Drawing.Size(125, 142);
             this.cmsAsset.Opening += new System.ComponentModel.CancelEventHandler(this.cmsAsset_Opening);
             // 
             // tsmAssign
             // 
             this.tsmAssign.Name = "tsmAssign";
-            this.tsmAssign.Size = new System.Drawing.Size(125, 22);
+            this.tsmAssign.Size = new System.Drawing.Size(124, 22);
             this.tsmAssign.Text = "👤 Assign";
             this.tsmAssign.Click += new System.EventHandler(this.btnAssign_Click);
             // 
             // tsmReturn
             // 
             this.tsmReturn.Name = "tsmReturn";
-            this.tsmReturn.Size = new System.Drawing.Size(125, 22);
+            this.tsmReturn.Size = new System.Drawing.Size(124, 22);
             this.tsmReturn.Text = "🔄 Return";
             this.tsmReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
             // tsmRepair
             // 
             this.tsmRepair.Name = "tsmRepair";
-            this.tsmRepair.Size = new System.Drawing.Size(125, 22);
+            this.tsmRepair.Size = new System.Drawing.Size(124, 22);
             this.tsmRepair.Text = "🔧 Repair";
             this.tsmRepair.Click += new System.EventHandler(this.btnRepair_Click);
             // 
             // tsmRetire
             // 
             this.tsmRetire.Name = "tsmRetire";
-            this.tsmRetire.Size = new System.Drawing.Size(125, 22);
+            this.tsmRetire.Size = new System.Drawing.Size(124, 22);
             this.tsmRetire.Text = "🛑 Retire";
             this.tsmRetire.Click += new System.EventHandler(this.btnRetire_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(122, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(121, 6);
             // 
             // tsmEdit
             // 
             this.tsmEdit.Name = "tsmEdit";
-            this.tsmEdit.Size = new System.Drawing.Size(125, 22);
+            this.tsmEdit.Size = new System.Drawing.Size(124, 22);
             this.tsmEdit.Text = "✏️ Edit";
             this.tsmEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // tsmDelete
             // 
             this.tsmDelete.Name = "tsmDelete";
-            this.tsmDelete.Size = new System.Drawing.Size(125, 22);
+            this.tsmDelete.Size = new System.Drawing.Size(124, 22);
             this.tsmDelete.Text = "🗑️ Delete";
             this.tsmDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
@@ -275,6 +286,7 @@ namespace Assets_Management_System.UserControls
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblSubtitle;
         private System.Windows.Forms.TextBox txtAssetName;
+        private System.Windows.Forms.Label lblSearchStatus;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnNew;

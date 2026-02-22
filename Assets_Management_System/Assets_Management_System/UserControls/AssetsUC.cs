@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Assets_Management_System;
 using Assets_Management_System.Models;
 using Assets_Management_System.Services;
 
@@ -49,19 +50,31 @@ namespace Assets_Management_System.UserControls
              }
 
             LoadGrid();
+            
+            // Setup search box - leave it completely empty
+            txtAssetName.Clear();
+            txtAssetName.TextChanged += TxtAssetName_TextChanged;
+            
+            // Initialize search status
+            UpdateSearchStatus(bindingSource.Count, false);
         }
 
         private void LoadGrid()
         {
             try
             {
-                dgvAssets.AutoGenerateColumns = false;
-
-                bindingSource.DataSource = service.GetAll();
-                dgvAssets.DataSource = bindingSource;
+                // Get data first to check if there are any assets
+                var assets = service.GetAll();
                 
+                if (assets == null || assets.Count == 0)
+                {
+                    MessageBox.Show("No assets found in database. Try adding a new asset.", "No Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                dgvAssets.AutoGenerateColumns = false;
                 dgvAssets.Columns.Clear();
 
+                // Setup columns BEFORE binding data
                 dgvAssets.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     DataPropertyName = "AssetCode",
@@ -74,7 +87,7 @@ namespace Assets_Management_System.UserControls
                     DataPropertyName = "Id",
                     HeaderText = "ID",
                     Width = 40,
-                    Visible = false // Hide ID usually
+                    Visible = false
                 });
 
                 dgvAssets.Columns.Add(new DataGridViewTextBoxColumn
@@ -151,10 +164,83 @@ namespace Assets_Management_System.UserControls
                 dgvAssets.EnableHeadersVisualStyles = false;
 
                 dgvAssets.RowTemplate.Height = 45;
+
+                // NOW bind the data AFTER columns are set up
+                bindingSource.DataSource = assets;
+                dgvAssets.DataSource = bindingSource;
+                
+                System.Diagnostics.Debug.WriteLine($"Grid loaded with {assets.Count} assets");
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading grid: " + ex.Message);
+                MessageBox.Show($"Error loading grid:\n\n{ex.Message}\n\nStack: {ex.StackTrace}", "Grid Loading Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Diagnostics.Debug.WriteLine($"LoadGrid Exception: {ex.Message}\n{ex.StackTrace}");
+            }
+        }
+
+        public void RefreshGrid()
+        {
+            LoadGrid();
+        }
+
+        private void TxtAssetName_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = txtAssetName.Text.Trim();
+            
+            // If search box is empty, remove filter and show all
+            if (string.IsNullOrEmpty(searchText))
+            {
+                bindingSource.RemoveFilter();
+                UpdateSearchStatus(bindingSource.Count, false);
+                return;
+            }
+            
+            // Apply filter for actual search text
+            FilterBySearchText(searchText);
+            UpdateSearchStatus(bindingSource.Count, true);
+        }
+
+        private void FilterBySearchText(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                bindingSource.RemoveFilter();
+                return;
+            }
+
+            try
+            {
+                // Escape single quotes for SQL
+                string escapedSearch = searchText.Replace("'", "''");
+                
+                string filter = $"AssetCode LIKE '%{escapedSearch}%' OR " +
+                               $"Name LIKE '%{escapedSearch}%' OR " +
+                               $"SerialNumber LIKE '%{escapedSearch}%' OR " +
+                               $"Category LIKE '%{escapedSearch}%'";
+                
+                bindingSource.Filter = filter;
+                System.Diagnostics.Debug.WriteLine($"Search filter applied: {filter}");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Filter error: {ex.Message}");
+                bindingSource.RemoveFilter();
+            }
+        }
+
+        private void UpdateSearchStatus(int count, bool isSearching)
+        {
+            if (lblSearchStatus == null) return;
+            
+            if (isSearching)
+            {
+                lblSearchStatus.Text = count == 0 
+                    ? "No results found" 
+                    : $"Showing {count} result{(count != 1 ? "s" : "")}";
+            }
+            else
+            {
+                lblSearchStatus.Text = $"Showing all {count} asset{(count != 1 ? "s" : "")}";
             }
         }
 
@@ -235,17 +321,24 @@ namespace Assets_Management_System.UserControls
             if (asset == null)
                 return;
 
-            var result = MessageBox.Show(
+            var confirmDialog = new ConfirmationDialog(
+                "Delete Confirmation",
                 $"Are you sure you want to delete:\n\nAsset: {asset.Name}\nSerial: {asset.SerialNumber}\nPrice: ${asset.Price:F2}",
-                "Confirm Delete",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+                isConfirmation: true);
+            
+            var result = confirmDialog.ShowDialog(this.ParentForm ?? Form.ActiveForm);
 
             if (result == DialogResult.Yes)
             {
                 service.Delete(asset.Id);
                 LoadGrid();
-                MessageBox.Show("Asset deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                var successDialog = new ConfirmationDialog(
+                    "Success",
+                    "Asset deleted successfully!",
+                    isConfirmation: false,
+                    isSuccess: true);
+                successDialog.ShowDialog(this.ParentForm ?? Form.ActiveForm);
             }
         }
 
@@ -297,14 +390,26 @@ namespace Assets_Management_System.UserControls
                 return;
             }
 
-            var result = MessageBox.Show($"Send {asset.Name} to repair?", "Confirm Repair", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var confirmDialog = new ConfirmationDialog(
+                "Confirm Repair",
+                $"Send {asset.Name} to repair?",
+                isConfirmation: true);
+            
+            var result = confirmDialog.ShowDialog(this.ParentForm ?? Form.ActiveForm);
+            
             if (result == DialogResult.Yes)
             {
                 try
                 {
                     service.SendToRepair(asset.Id, "Sent to repair from Asset List");
                     LoadGrid();
-                    MessageBox.Show("Asset status updated to Repair.", "Success");
+                    
+                    var successDialog = new ConfirmationDialog(
+                        "Success",
+                        "Asset status updated to Repair.",
+                        isConfirmation: false,
+                        isSuccess: true);
+                    successDialog.ShowDialog(this.ParentForm ?? Form.ActiveForm);
                 }
                 catch (Exception ex)
                 {
@@ -319,8 +424,12 @@ namespace Assets_Management_System.UserControls
 
             var asset = dgvAssets.SelectedRows[0].DataBoundItem as Asset;
 
-            var result = MessageBox.Show($"Are you sure you want to RETIRE {asset.Name}?\nThis action is FINAL and cannot be undone.", 
-                "Confirm Retirement", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            var confirmDialog = new ConfirmationDialog(
+                "Confirm Retirement",
+                $"Are you sure you want to RETIRE {asset.Name}?\nThis action is FINAL and cannot be undone.",
+                isConfirmation: true);
+            
+            var result = confirmDialog.ShowDialog(this.ParentForm ?? Form.ActiveForm);
             
             if (result == DialogResult.Yes)
             {
@@ -328,7 +437,13 @@ namespace Assets_Management_System.UserControls
                 {
                     service.RetireAsset(asset.Id, "Asset retired from Asset List");
                     LoadGrid();
-                    MessageBox.Show("Asset has been retired.", "Success");
+                    
+                    var successDialog = new ConfirmationDialog(
+                        "Success",
+                        "Asset has been retired.",
+                        isConfirmation: false,
+                        isSuccess: true);
+                    successDialog.ShowDialog(this.ParentForm ?? Form.ActiveForm);
                 }
                 catch (Exception ex)
                 {
